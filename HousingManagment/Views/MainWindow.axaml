@@ -10,15 +10,13 @@
         Title="HousingManagment">
 
     <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainWindowViewModel/>
     </Design.DataContext>
-    <Grid>
-        <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <ComboBox></ComboBox>
-        <Button>Test</Button>
-    </Grid>
-    
-
+    <TabControl x:Name="HousingControl">
+        <TabItem Header="Housing type" x:DataType="vm:HousingTypeViewModel">
+            <Grid>
+                <DataGrid x:Name="HousingTypeGrid" ItemsSource="{Binding HousingTypes}"></DataGrid>
+            </Grid>
+        </TabItem>
+    </TabControl>
 </Window>

@@ -1,6 +1,8 @@
-﻿namespace HousingManagment.ViewModels;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace HousingManagment.ViewModels;
 
 public class MainWindowViewModel : ViewModelBase
 {
-    public string Greeting => "Welcome to Avalonia!";
+    
 }
