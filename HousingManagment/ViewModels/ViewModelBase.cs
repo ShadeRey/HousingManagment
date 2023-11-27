@@ -5,26 +5,20 @@ using ReactiveUI;
 
 namespace HousingManagment.ViewModels;
 
-public class ViewModelBase : INotifyPropertyChanged, INotifyPropertyChanging
+public class ViewModelBase : INotifyPropertyChanged
 {
-    public event PropertyChangedEventHandler? PropertyChanged;
-    public event PropertyChangingEventHandler? PropertyChanging;
+    public event PropertyChangedEventHandler PropertyChanged;
 
-    protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null) {
-        if (EqualityComparer<T>.Default.Equals(field, value)) {
-            return false;
-        }
-        RaisePropertyChanging(propertyName);
+    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+    {
+        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
         field = value;
-        RaisePropertyChanged(propertyName);
+        OnPropertyChanged(propertyName);
         return true;
-    }
-
-    protected void RaisePropertyChanged([CallerMemberName] string? propertyName = null) {
-        PropertyChanged?.Invoke(this, new(propertyName));
-    }
-
-    protected void RaisePropertyChanging([CallerMemberName] string? propertyName = null) {
-        PropertyChanging?.Invoke(this, new(propertyName));
     }
 }

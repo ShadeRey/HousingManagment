@@ -1,52 +1,70 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Avalonia.Collections;
+using Avalonia.Logging;
 using HousingManagment.Models;
-using MySql.Data.MySqlClient;
+using MySqlConnector;
 
 namespace HousingManagment.ViewModels;
 
 public class HousingTypeViewModel: ViewModelBase
 {
-    private const string _connectionString = "server=10.10.1.24;user=user_01;password=user01pro;database=pro1_23;";
+    //private const string _connectionString = "server=10.10.1.24;user=user_01;password=user01pro;database=pro1_23;";
+    private const string _connectionString = "Server=localhost;Database=UP;User Id=root;Password=sharaga228;";
 
-    public ObservableCollection<HousingType> GetItems()
+    public AvaloniaList<HousingType> GetHousingTypesFromDb()
     {
-        ObservableCollection<HousingType> items = new ObservableCollection<HousingType>();
-        using (var connection = new MySqlConnection(_connectionString))
-        {
-            connection.Open();
+        AvaloniaList<HousingType> housingTypes = new AvaloniaList<HousingType>();
 
-            using (var command = connection.CreateCommand())
+        using (MySqlConnection connection = new MySqlConnection(_connectionString))
+        {
+            try
             {
-                command.CommandText = "SELECT * FROM HousingType";
-                using (var reader = command.ExecuteReader())
+                connection.Open();
+                string selectAllHousingtypes = "SELECT * FROM housingtype";
+                MySqlCommand cmd = new MySqlCommand(selectAllHousingtypes, connection);
+                MySqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
                 {
-                    while (reader.Read())
+                    HousingType housingTypesItem = new HousingType();
+                    if (!reader.IsDBNull(reader.GetOrdinal("ID")))
                     {
-                        var housingType = new HousingType()
-                        {
-                            ID = reader.GetInt32(0),
-                            Name = reader.GetString(1)
-                        };
-                        items.Add(housingType);
+                        housingTypesItem.ID = reader.GetInt32("ID");
                     }
+
+                    // Check if the "Name" field is DBNull before attempting to convert
+                    if (!reader.IsDBNull(reader.GetOrdinal("Name")))
+                    {
+                        housingTypesItem.Name = reader.GetString("Name");
+                    }
+
+                    housingTypes.Add(housingTypesItem);
                 }
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine("Ошибка подключения к БД: " + ex.Message);
+            }
+            finally
+            {
+                connection.Close();
             }
         }
 
-        return items;
+        return housingTypes;
     }
-    private ObservableCollection<HousingType> _housingTypes;
+    
+    private AvaloniaList<HousingType> _housingType;
 
-    public ObservableCollection<HousingType> HousingTypes
+    public AvaloniaList<HousingType> HousingType
     {
-        get => _housingTypes;
-        set => SetField(ref _housingTypes, value);
+        get => _housingType;
+        set => SetField(ref _housingType, value);
     }
 
     public HousingTypeViewModel()
     {
-        HousingTypes = new ObservableCollection<HousingType>();
-        HousingTypes = GetItems();
+        HousingType = GetHousingTypesFromDb();
     }
 }
