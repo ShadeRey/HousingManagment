@@ -10,8 +10,8 @@ namespace HousingManagment.ViewModels;
 
 public class HousingTypeViewModel: ViewModelBase
 {
-    //private const string _connectionString = "server=10.10.1.24;user=user_01;password=user01pro;database=pro1_23;";
-    private const string _connectionString = "Server=localhost;Database=UP;User Id=root;Password=sharaga228;";
+    private const string _connectionString = "server=10.10.1.24;user=user_01;password=user01pro;database=pro1_23;";
+    //private const string _connectionString = "Server=localhost;Database=UP;User Id=root;Password=sharaga228;";
 
     public AvaloniaList<HousingType> GetHousingTypesFromDb()
     {
@@ -22,7 +22,7 @@ public class HousingTypeViewModel: ViewModelBase
             try
             {
                 connection.Open();
-                string selectAllHousingtypes = "SELECT * FROM housingtype";
+                string selectAllHousingtypes = "SELECT * FROM HousingType";
                 MySqlCommand cmd = new MySqlCommand(selectAllHousingtypes, connection);
                 MySqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
@@ -33,7 +33,6 @@ public class HousingTypeViewModel: ViewModelBase
                         housingTypesItem.ID = reader.GetInt32("ID");
                     }
 
-                    // Check if the "Name" field is DBNull before attempting to convert
                     if (!reader.IsDBNull(reader.GetOrdinal("Name")))
                     {
                         housingTypesItem.Name = reader.GetString("Name");

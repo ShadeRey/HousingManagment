@@ -1,3 +1,4 @@
+using Avalonia.Collections;
 using Avalonia.Controls;
 using HousingManagment.ViewModels;
 
@@ -8,6 +9,7 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        DataContext = new HousingTypeViewModel();
+        HousingTypeTabItem.DataContext = new HousingTypeViewModel();
+        MaintenanceWorkTabItem.DataContext = new MaintenanceWorkViewModel();
     }
 }

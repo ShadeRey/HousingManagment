@@ -12,12 +12,20 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
     <TabControl x:Name="HousingControl">
-        <TabItem Header="Housing type" x:DataType="vm:HousingTypeViewModel">
+        <TabItem Header="Housing type" x:DataType="vm:HousingTypeViewModel" x:Name="HousingTypeTabItem">
             <Grid>
                 <DataGrid x:Name="HousingTypeGrid" 
                           AutoGenerateColumns="True" 
                           IsReadOnly="True"
                           ItemsSource="{Binding HousingType}"/>
+            </Grid>
+        </TabItem>
+        <TabItem Header="Maintenance work" x:DataType="vm:MaintenanceWorkViewModel" x:Name="MaintenanceWorkTabItem">
+            <Grid>
+                <DataGrid x:Name="MaintenanceWorkGrid"
+                          AutoGenerateColumns="True"
+                          IsReadOnly="True"
+                          ItemsSource="{Binding MaintenanceWork}"></DataGrid>
             </Grid>
         </TabItem>
     </TabControl>
