@@ -3,6 +3,7 @@ using Avalonia.Collections;
 using Avalonia.Logging;
 using HousingManagment.Models;
 using MySqlConnector;
+using ReactiveUI;
 
 namespace HousingManagment.ViewModels;
 
@@ -72,7 +73,7 @@ public class MaintenanceWorkViewModel: ViewModelBase
     public AvaloniaList<MaintenanceWork> MaintenanceWork
     {
         get => _maintenanceWork;
-        set => SetField(ref _maintenanceWork, value);
+        set => this.RaiseAndSetIfChanged(ref _maintenanceWork, value);
     }
 
     public MaintenanceWorkViewModel()

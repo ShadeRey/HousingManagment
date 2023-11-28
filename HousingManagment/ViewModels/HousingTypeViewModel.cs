@@ -5,6 +5,7 @@ using Avalonia.Collections;
 using Avalonia.Logging;
 using HousingManagment.Models;
 using MySqlConnector;
+using ReactiveUI;
 
 namespace HousingManagment.ViewModels;
 
@@ -22,8 +23,8 @@ public class HousingTypeViewModel: ViewModelBase
             try
             {
                 connection.Open();
-                string selectAllHousingtypes = "SELECT * FROM HousingType";
-                MySqlCommand cmd = new MySqlCommand(selectAllHousingtypes, connection);
+                string selectAllHousingTypes = "SELECT * FROM HousingType";
+                MySqlCommand cmd = new MySqlCommand(selectAllHousingTypes, connection);
                 MySqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
@@ -59,7 +60,7 @@ public class HousingTypeViewModel: ViewModelBase
     public AvaloniaList<HousingType> HousingType
     {
         get => _housingType;
-        set => SetField(ref _housingType, value);
+        set => this.RaiseAndSetIfChanged(ref _housingType, value);
     }
 
     public HousingTypeViewModel()

@@ -9,7 +9,6 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        HousingTypeTabItem.DataContext = new HousingTypeViewModel();
-        MaintenanceWorkTabItem.DataContext = new MaintenanceWorkViewModel();
+        DataContext = new MainWindowViewModel();
     }
 }
