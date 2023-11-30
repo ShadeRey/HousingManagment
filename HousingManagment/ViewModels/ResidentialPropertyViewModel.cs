@@ -1,12 +1,14 @@
 using System;
+using System.Data;
 using Avalonia.Collections;
 using HousingManagment.Models;
 using MySqlConnector;
 using ReactiveUI;
+using Splat;
 
 namespace HousingManagment.ViewModels;
 
-public class ResidentialPropertyViewModel: ViewModelBase
+public class ResidentialPropertyViewModel: ViewModelBase, IEnableLogger
 {
     private const string _connectionString = "server=10.10.1.24;user=user_01;password=user01pro;database=pro1_23;";
     //private const string _connectionString = "Server=localhost;Database=UP;User Id=root;Password=sharaga228;";
@@ -20,7 +22,13 @@ public class ResidentialPropertyViewModel: ViewModelBase
             try
             {
                 connection.Open();
-                string selectAllResidentialProperties = "SELECT * FROM ResidentialProperty";
+                string selectAllResidentialProperties = """
+                                                        SELECT ResidentialProperty.ID, Address, Square, NumberOfRooms, Name, Sum, Description
+                                                        From ResidentialProperty
+                                                            join MaintenanceWork on ResidentialProperty.ID = MaintenanceWork.ID
+                                                            join HousingType on ResidentialProperty.ID = HousingType.ID
+                                                            join UtilityPayment on ResidentialProperty.ID = UtilityPayment.ID;
+                                                        """;
                 MySqlCommand cmd = new MySqlCommand(selectAllResidentialProperties, connection);
                 MySqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
@@ -46,19 +54,19 @@ public class ResidentialPropertyViewModel: ViewModelBase
                         residentialPropertiesItem.NumberOfRooms = reader.GetInt32("NumberOfRooms");
                     }
                     
-                    if (!reader.IsDBNull(reader.GetOrdinal("HousingType")))
+                    if (!reader.IsDBNull(reader.GetOrdinal("Name")))
                     {
-                        residentialPropertiesItem.HousingType = reader.GetInt32("HousingType");
+                        residentialPropertiesItem.HousingName = reader.GetString("Name");
                     }
                     
-                    if (!reader.IsDBNull(reader.GetOrdinal("Payment")))
+                    if (!reader.IsDBNull(reader.GetOrdinal("Sum")))
                     {
-                        residentialPropertiesItem.Payment = reader.GetInt32("Payment");
+                        residentialPropertiesItem.PaymentMethod = reader.GetDecimal("Sum");
                     }
                     
-                    if (!reader.IsDBNull(reader.GetOrdinal("Work")))
+                    if (!reader.IsDBNull(reader.GetOrdinal("Description")))
                     {
-                        residentialPropertiesItem.Work = reader.GetInt32("Work");
+                        residentialPropertiesItem.WorkDescription = reader.GetString("Description");
                     }
 
                     residentialProperties.Add(residentialPropertiesItem);

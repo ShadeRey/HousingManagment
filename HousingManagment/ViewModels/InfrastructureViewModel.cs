@@ -20,7 +20,11 @@ public class InfrastructureViewModel: ViewModelBase
             try
             {
                 connection.Open();
-                string selectAllInfrastructures = "SELECT * FROM Infrastructure";
+                string selectAllInfrastructures = """
+                                                  SELECT Infrastructure.ID, Type, State, Description
+                                                  From Infrastructure
+                                                  join MaintenanceWork on Infrastructure.ID = MaintenanceWork.ID;
+                                                  """;
                 MySqlCommand cmd = new MySqlCommand(selectAllInfrastructures, connection);
                 MySqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
@@ -41,9 +45,9 @@ public class InfrastructureViewModel: ViewModelBase
                         infrastructuresItem.State = reader.GetString("State");
                     }
                     
-                    if (!reader.IsDBNull(reader.GetOrdinal("Work")))
+                    if (!reader.IsDBNull(reader.GetOrdinal("Description")))
                     {
-                        infrastructuresItem.Work = reader.GetInt32("Work");
+                        infrastructuresItem.WorkDescription = reader.GetString("Description");
                     }
 
                     infrastructures.Add(infrastructuresItem);

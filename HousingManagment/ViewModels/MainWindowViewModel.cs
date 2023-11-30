@@ -8,5 +8,5 @@ public class MainWindowViewModel : ViewModelBase
     public HousingTypeViewModel HousingTypeViewModel { get; set; } = new();
     public UtilityPaymentViewModel UtilityPaymentViewModel { get; set; } = new();
     public InfrastructureViewModel InfrastructureViewModel { get; set; } = new();
-    
+    public ResidentialPropertyViewModel ResidentialPropertyViewModel { get; set; } = new();
 }

@@ -9,4 +9,7 @@ public class ResidentialProperty
     public int HousingType { get; set; }
     public int Payment { get; set; }
     public int Work { get; set; }
+    public string HousingName { get; set; }
+    public decimal PaymentMethod { get; set; }
+    public string WorkDescription { get; set; }
 }

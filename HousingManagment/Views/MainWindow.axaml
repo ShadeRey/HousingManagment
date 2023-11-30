@@ -67,7 +67,25 @@
                         <DataGridTextColumn Header="ID" Binding="{Binding ID}"/>
                         <DataGridTextColumn Header="Type" Binding="{Binding Type}"/>
                         <DataGridTextColumn Header="State" Binding="{Binding State}"/>
-                        <DataGridTextColumn Header="Work" Binding="{Binding Work}"/>
+                        <DataGridTextColumn Header="Work" Binding="{Binding WorkDescription}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </TabItem>
+        <TabItem Header="Residential property">
+            <Grid>
+                <DataGrid
+                    IsReadOnly="True" 
+                    DataContext="{Binding ResidentialPropertyViewModel}"
+                    ItemsSource="{Binding ResidentialProperty }">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding ID}"/>
+                        <DataGridTextColumn Header="Address" Binding="{Binding Address}"/>
+                        <DataGridTextColumn Header="Square" Binding="{Binding Square, StringFormat={}{0} m²}"/>
+                        <DataGridTextColumn Header="Number of rooms" Binding="{Binding NumberOfRooms}"/>
+                        <DataGridTextColumn Header="Housing type" Binding="{Binding HousingName}"/>
+                        <DataGridTextColumn Header="Payment" Binding="{Binding PaymentMethod, StringFormat={}{0}$}"/>
+                        <DataGridTextColumn Header="Work" Binding="{Binding WorkDescription}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>

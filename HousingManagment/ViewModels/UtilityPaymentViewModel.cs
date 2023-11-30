@@ -20,7 +20,7 @@ public class UtilityPaymentViewModel: ViewModelBase
             try
             {
                 connection.Open();
-                string selectAllUtilityPayments = "SELECT * FROM UtilityPayments";
+                string selectAllUtilityPayments = "SELECT * FROM UtilityPayment";
                 MySqlCommand cmd = new MySqlCommand(selectAllUtilityPayments, connection);
                 MySqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())

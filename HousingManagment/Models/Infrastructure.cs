@@ -6,4 +6,5 @@ public class Infrastructure
     public string Type { get; set; }
     public string State { get; set; }
     public int Work { get; set; }
+    public string WorkDescription { get; set; }
 }
