@@ -3,6 +3,7 @@
         xmlns:vm="using:HousingManagment.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:SukiUI.Controls;assembly=SukiUI"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="HousingManagment.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
@@ -17,11 +18,13 @@
     <Design.DataContext>
         <vm:MainWindowViewModel />
     </Design.DataContext>
+    <controls:InteractiveContainer Name="DialogContainer">
+        
     <TabControl x:Name="HousingControl">
         <TabItem Header="Housing type">
             <Grid RowDefinitions="*,*">
                 <StackPanel Grid.Row="0" Width="150">
-                    <Button x:Name="HousingTypeAdd" Content="Добавить" Click="Button_OnClick"></Button>
+                    <Button Classes="Primary" Foreground="White" x:Name="HousingTypeAdd" Content="Добавить" Click="HousingTypeAdd_OnClick"></Button>
                 </StackPanel>
                 <DataGrid Grid.Row="1"
                           Margin="0 -450 0 0"
@@ -104,4 +107,5 @@
             </Grid>
         </TabItem>
     </TabControl>
+    </controls:InteractiveContainer>
 </Window>

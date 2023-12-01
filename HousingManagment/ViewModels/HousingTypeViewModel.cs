@@ -67,4 +67,8 @@ public class HousingTypeViewModel: ViewModelBase
     {
         HousingType = GetHousingTypesFromDb();
     }
+
+    public void OnNew(HousingType housingType) {
+        HousingType.Add(housingType);
+    }
 }
