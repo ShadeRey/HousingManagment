@@ -7,37 +7,48 @@
         x:Class="HousingManagment.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
-        Title="HousingManagment">
-
+        Title="HousingManagment"
+        WindowState="Maximized">
+    <Window.Styles>
+        <Style Selector="DataGridColumnHeader /template/ Grid">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+    </Window.Styles>
     <Design.DataContext>
-        <vm:MainWindowViewModel/>
+        <vm:MainWindowViewModel />
     </Design.DataContext>
     <TabControl x:Name="HousingControl">
-        <TabItem Header="Housing type" >
-            <Grid>
-                <DataGrid
-                          IsReadOnly="True" 
-                          DataContext="{Binding  HousingTypeViewModel}"
+        <TabItem Header="Housing type">
+            <Grid RowDefinitions="*,*">
+                <StackPanel Grid.Row="0" Width="150">
+                    <Button x:Name="HousingTypeAdd" Content="Добавить" Click="Button_OnClick"></Button>
+                </StackPanel>
+                <DataGrid Grid.Row="1"
+                          Margin="0 -450 0 0"
+                          IsReadOnly="True"
+                          DataContext="{Binding HousingTypeViewModel}"
                           ItemsSource="{Binding HousingType}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="ID" Binding="{Binding ID}"/>
-                        <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                        <DataGridTextColumn Width="*" Header="ID" Binding="{Binding ID}" />
+                        <DataGridTextColumn Width="*" Header="Name" Binding="{Binding Name}" />
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
         </TabItem>
-        <TabItem Header="Maintenance work" >
+        <TabItem Header="Maintenance work">
             <Grid>
                 <DataGrid
-                          IsReadOnly="True" 
-                          DataContext="{Binding MaintenanceWorkViewModel}"
-                          ItemsSource="{Binding MaintenanceWork }">
+                    IsReadOnly="True"
+                    DataContext="{Binding MaintenanceWorkViewModel}"
+                    ItemsSource="{Binding MaintenanceWork }">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="ID" Binding="{Binding ID}"/>
-                        <DataGridTextColumn Header="Description" Binding="{Binding Description}"/>
-                        <DataGridTextColumn Header="Start date" Binding="{Binding StartDate, StringFormat=dd.MM.yyyy}"/>
-                        <DataGridTextColumn Header="End date" Binding="{Binding EndDate, StringFormat=dd.MM.yyyy}"/>
-                        <DataGridTextColumn Header="Price" Binding="{Binding Price, StringFormat={} {0}$}"/>
+                        <DataGridTextColumn Width="*" Header="ID" Binding="{Binding ID}" />
+                        <DataGridTextColumn Width="*" Header="Description" Binding="{Binding Description}" />
+                        <DataGridTextColumn Width="*" Header="Start date"
+                                            Binding="{Binding StartDate, StringFormat=dd.MM.yyyy}" />
+                        <DataGridTextColumn Width="*" Header="End date"
+                                            Binding="{Binding EndDate, StringFormat=dd.MM.yyyy}" />
+                        <DataGridTextColumn Width="*" Header="Price" Binding="{Binding Price, StringFormat={} {0}$}" />
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
@@ -45,14 +56,15 @@
         <TabItem Header="Utility payment">
             <Grid>
                 <DataGrid
-                    IsReadOnly="True" 
+                    IsReadOnly="True"
                     DataContext="{Binding UtilityPaymentViewModel}"
                     ItemsSource="{Binding UtilityPayment }">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="ID" Binding="{Binding ID}"/>
-                        <DataGridTextColumn Header="Sum" Binding="{Binding Sum}"/>
-                        <DataGridTextColumn Header="Payment date" Binding="{Binding PaymentDate, StringFormat=dd.MM.yyyy}"/>
-                        <DataGridTextColumn Header="Payment method" Binding="{Binding PaymentMethod}"/>
+                        <DataGridTextColumn Width="*" Header="ID" Binding="{Binding ID}" />
+                        <DataGridTextColumn Width="*" Header="Sum" Binding="{Binding Sum}" />
+                        <DataGridTextColumn Width="*" Header="Payment date"
+                                            Binding="{Binding PaymentDate, StringFormat=dd.MM.yyyy}" />
+                        <DataGridTextColumn Width="*" Header="Payment method" Binding="{Binding PaymentMethod}" />
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
@@ -60,14 +72,14 @@
         <TabItem Header="Infrastructure">
             <Grid>
                 <DataGrid
-                    IsReadOnly="True" 
+                    IsReadOnly="True"
                     DataContext="{Binding InfrastructureViewModel}"
                     ItemsSource="{Binding Infrastructure }">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="ID" Binding="{Binding ID}"/>
-                        <DataGridTextColumn Header="Type" Binding="{Binding Type}"/>
-                        <DataGridTextColumn Header="State" Binding="{Binding State}"/>
-                        <DataGridTextColumn Header="Work" Binding="{Binding WorkDescription}"/>
+                        <DataGridTextColumn Width="*" Header="ID" Binding="{Binding ID}" />
+                        <DataGridTextColumn Width="*" Header="Type" Binding="{Binding Type}" />
+                        <DataGridTextColumn Width="*" Header="State" Binding="{Binding State}" />
+                        <DataGridTextColumn Width="*" Header="Work" Binding="{Binding WorkDescription}" />
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
@@ -75,17 +87,18 @@
         <TabItem Header="Residential property">
             <Grid>
                 <DataGrid
-                    IsReadOnly="True" 
+                    IsReadOnly="True"
                     DataContext="{Binding ResidentialPropertyViewModel}"
                     ItemsSource="{Binding ResidentialProperty }">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="ID" Binding="{Binding ID}"/>
-                        <DataGridTextColumn Header="Address" Binding="{Binding Address}"/>
-                        <DataGridTextColumn Header="Square" Binding="{Binding Square, StringFormat={}{0} m²}"/>
-                        <DataGridTextColumn Header="Number of rooms" Binding="{Binding NumberOfRooms}"/>
-                        <DataGridTextColumn Header="Housing type" Binding="{Binding HousingName}"/>
-                        <DataGridTextColumn Header="Payment" Binding="{Binding PaymentMethod, StringFormat={}{0}$}"/>
-                        <DataGridTextColumn Header="Work" Binding="{Binding WorkDescription}"/>
+                        <DataGridTextColumn Width="*" Header="ID" Binding="{Binding ID}" />
+                        <DataGridTextColumn Width="*" Header="Address" Binding="{Binding Address}" />
+                        <DataGridTextColumn Width="*" Header="Square" Binding="{Binding Square, StringFormat={}{0} m²}" />
+                        <DataGridTextColumn Width="*" Header="Number of rooms" Binding="{Binding NumberOfRooms}" />
+                        <DataGridTextColumn Width="*" Header="Housing type" Binding="{Binding HousingName}" />
+                        <DataGridTextColumn Width="*" Header="Payment"
+                                            Binding="{Binding PaymentMethod, StringFormat={}{0}$}" />
+                        <DataGridTextColumn Width="*" Header="Work" Binding="{Binding WorkDescription}" />
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
