@@ -8,7 +8,8 @@ public class DatabaseManagerAdd {
     private readonly string connectionString;
 
     public DatabaseManagerAdd() {
-        connectionString = "server=10.10.1.24;user=user_01;password=user01pro;database=pro1_23;";
+        // connectionString = "server=10.10.1.24;user=user_01;password=user01pro;database=pro1_23;";
+        connectionString = "Server=localhost;Database=UP;User Id=root;Password=sharaga228;";
     }
     
     public DatabaseManagerAdd(string connectionString)

@@ -2,6 +2,7 @@ using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Interactivity;
+using Avalonia.Media;
 using HousingManagment.DataBaseCommands;
 using HousingManagment.Models;
 using HousingManagment.ViewModels;
@@ -37,12 +38,14 @@ public partial class MainWindow : Window
             DataContext = new HousingType(),
             Children = {
                 new TextBox() {
+                    Watermark = "Name",
                     [!TextBox.TextProperty] = new Binding("Name")
                 },
                 new Button() {
                     Content = "Добавить",
                     Classes = { "Primary" },
                     Command = add,
+                    Foreground = Brushes.White,
                     [!Button.CommandParameterProperty] = new Binding(".")
                 },
                 new Button() {
