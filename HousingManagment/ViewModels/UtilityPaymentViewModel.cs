@@ -8,8 +8,8 @@ namespace HousingManagment.ViewModels;
 
 public class UtilityPaymentViewModel: ViewModelBase
 {
-    // private const string _connectionString = "server=10.10.1.24;user=user_01;password=user01pro;database=pro1_23;";
-    private const string _connectionString = "Server=localhost;Database=UP;User Id=root;Password=sharaga228;";
+    private const string _connectionString = "server=10.10.1.24;user=user_01;password=user01pro;database=pro1_23;";
+    // private const string _connectionString = "Server=localhost;Database=UP;User Id=root;Password=sharaga228;";
 
     public AvaloniaList<UtilityPayment> GetUtilityPaymentsFromDb()
     {
@@ -73,5 +73,9 @@ public class UtilityPaymentViewModel: ViewModelBase
     public UtilityPaymentViewModel()
     {
         UtilityPayment = GetUtilityPaymentsFromDb();
+    }
+    
+    public void OnNew(UtilityPayment utilityPayment) {
+        UtilityPayment.Add(utilityPayment);
     }
 }

@@ -5,20 +5,20 @@ using MySqlConnector;
 namespace HousingManagment.DataBaseCommands; 
 
 public class DatabaseManagerAdd {
-    private readonly string connectionString;
+    public static readonly string ConnectionString
+        = "server=10.10.1.24;user=user_01;password=user01pro;database=pro1_23;";
+        // = "Server=localhost;Database=UP;User Id=root;Password=sharaga228;";
 
     public DatabaseManagerAdd() {
-        // connectionString = "server=10.10.1.24;user=user_01;password=user01pro;database=pro1_23;";
-        connectionString = "Server=localhost;Database=UP;User Id=root;Password=sharaga228;";
     }
     
-    public DatabaseManagerAdd(string connectionString)
-    {
-        this.connectionString = connectionString;
-    }
+    // public DatabaseManagerAdd(string connectionString)
+    // {
+    //     ConnectionString = connectionString;
+    // }
 
     public int InsertData(string tableName, params MySqlParameter[] parameters) {
-        using MySqlConnection connection = new MySqlConnection(connectionString);
+        using MySqlConnection connection = new MySqlConnection(ConnectionString);
         connection.Open();
         using MySqlCommand command = connection.CreateCommand();
         var paramString = string.Join(',', parameters.Select(x => x.ParameterName));

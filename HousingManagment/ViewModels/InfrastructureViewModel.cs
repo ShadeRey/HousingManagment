@@ -8,8 +8,8 @@ namespace HousingManagment.ViewModels;
 
 public class InfrastructureViewModel: ViewModelBase
 {
-    // private const string _connectionString = "server=10.10.1.24;user=user_01;password=user01pro;database=pro1_23;";
-    private const string _connectionString = "Server=localhost;Database=UP;User Id=root;Password=sharaga228;";
+    private const string _connectionString = "server=10.10.1.24;user=user_01;password=user01pro;database=pro1_23;";
+    // private const string _connectionString = "Server=localhost;Database=UP;User Id=root;Password=sharaga228;";
 
     public AvaloniaList<Infrastructure> GetInfrastructuresFromDb()
     {
@@ -77,5 +77,9 @@ public class InfrastructureViewModel: ViewModelBase
     public InfrastructureViewModel()
     {
         Infrastructure = GetInfrastructuresFromDb();
+    }
+    
+    public void OnNew(Infrastructure infrastructure) {
+        Infrastructure.Add(infrastructure);
     }
 }
