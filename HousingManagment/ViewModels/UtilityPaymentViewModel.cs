@@ -1,5 +1,7 @@
 using System;
 using Avalonia.Collections;
+using DynamicData;
+using HousingManagment.DataBaseCommands;
 using HousingManagment.Models;
 using MySqlConnector;
 using ReactiveUI;
@@ -8,14 +10,13 @@ namespace HousingManagment.ViewModels;
 
 public class UtilityPaymentViewModel: ViewModelBase
 {
-    private const string _connectionString = "server=10.10.1.24;user=user_01;password=user01pro;database=pro1_23;";
-    // private const string _connectionString = "Server=localhost;Database=UP;User Id=root;Password=sharaga228;";
+    public static readonly string ConnectionString = DatabaseManagerConnectionString.ConnectionString;
 
     public AvaloniaList<UtilityPayment> GetUtilityPaymentsFromDb()
     {
         AvaloniaList<UtilityPayment> utilityPayments = new AvaloniaList<UtilityPayment>();
 
-        using (MySqlConnection connection = new MySqlConnection(_connectionString))
+        using (MySqlConnection connection = new MySqlConnection(ConnectionString))
         {
             try
             {
@@ -77,5 +78,20 @@ public class UtilityPaymentViewModel: ViewModelBase
     
     public void OnNew(UtilityPayment utilityPayment) {
         UtilityPayment.Add(utilityPayment);
+    }
+    
+    private UtilityPayment _utilityPaymentSelectedItem;
+
+    public UtilityPayment UtilityPaymentSelectedItem {
+        get => _utilityPaymentSelectedItem;
+        set => this.RaiseAndSetIfChanged(ref _utilityPaymentSelectedItem, value);
+    }
+    
+    public void OnDelete(UtilityPayment utilityPayment) {
+        UtilityPayment.Remove(utilityPayment);
+    }
+    
+    public void OnEdit(UtilityPayment utilityPayment) {
+        UtilityPayment.Replace(UtilityPaymentSelectedItem, utilityPayment);
     }
 }

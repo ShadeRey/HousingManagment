@@ -1,6 +1,7 @@
 using System;
 using Avalonia.Collections;
-using Avalonia.Logging;
+using DynamicData;
+using HousingManagment.DataBaseCommands;
 using HousingManagment.Models;
 using MySqlConnector;
 using ReactiveUI;
@@ -9,14 +10,13 @@ namespace HousingManagment.ViewModels;
 
 public class MaintenanceWorkViewModel: ViewModelBase
 {
-    private const string _connectionString = "server=10.10.1.24;user=user_01;password=user01pro;database=pro1_23;";
-    // private const string _connectionString = "Server=localhost;Database=UP;User Id=root;Password=sharaga228;";
+    public static readonly string ConnectionString = DatabaseManagerConnectionString.ConnectionString;
 
     public AvaloniaList<MaintenanceWork> GetMaintenanceWorksFromDb()
     {
         AvaloniaList<MaintenanceWork> maintenanceWorks = new AvaloniaList<MaintenanceWork>();
 
-        using (MySqlConnection connection = new MySqlConnection(_connectionString))
+        using (MySqlConnection connection = new MySqlConnection(ConnectionString))
         {
             try
             {
@@ -82,5 +82,20 @@ public class MaintenanceWorkViewModel: ViewModelBase
     }
     public void OnNew(MaintenanceWork maintenanceWork) {
         MaintenanceWork.Add(maintenanceWork);
+    }
+    
+    private MaintenanceWork _maintenanceWorkSelectedItem;
+
+    public MaintenanceWork MaintenanceWorkSelectedItem {
+        get => _maintenanceWorkSelectedItem;
+        set => this.RaiseAndSetIfChanged(ref _maintenanceWorkSelectedItem, value);
+    }
+    
+    public void OnDelete(MaintenanceWork maintenanceWork) {
+        MaintenanceWork.Remove(maintenanceWork);
+    }
+    
+    public void OnEdit(MaintenanceWork maintenanceWork) {
+        MaintenanceWork.Replace(MaintenanceWorkSelectedItem, maintenanceWork);
     }
 }

@@ -4,7 +4,12 @@
     <option name="projectPerEditor">
       <map>
         <entry key="HousingManagment/App.axaml" value="HousingManagment/HousingManagment.csproj" />
+        <entry key="HousingManagment/Views/HousingTypeView.axaml" value="HousingManagment/HousingManagment.csproj" />
+        <entry key="HousingManagment/Views/InfrastructureView.axaml" value="HousingManagment/HousingManagment.csproj" />
         <entry key="HousingManagment/Views/MainWindow.axaml" value="HousingManagment/HousingManagment.csproj" />
+        <entry key="HousingManagment/Views/MaintenanceWorkView.axaml" value="HousingManagment/HousingManagment.csproj" />
+        <entry key="HousingManagment/Views/ResidentialPropertyView.axaml" value="HousingManagment/HousingManagment.csproj" />
+        <entry key="HousingManagment/Views/UtilityPaymentView.axaml" value="HousingManagment/HousingManagment.csproj" />
       </map>
     </option>
   </component>

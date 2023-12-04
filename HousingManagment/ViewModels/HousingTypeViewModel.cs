@@ -1,8 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Avalonia.Collections;
-using Avalonia.Logging;
+using DynamicData;
+using HousingManagment.DataBaseCommands;
 using HousingManagment.Models;
 using MySqlConnector;
 using ReactiveUI;
@@ -11,14 +10,13 @@ namespace HousingManagment.ViewModels;
 
 public class HousingTypeViewModel: ViewModelBase
 {
-    private const string _connectionString = "server=10.10.1.24;user=user_01;password=user01pro;database=pro1_23;";
-    // private const string _connectionString = "Server=localhost;Database=UP;User Id=root;Password=sharaga228;";
+    public static readonly string ConnectionString = DatabaseManagerConnectionString.ConnectionString;
 
     public AvaloniaList<HousingType> GetHousingTypesFromDb()
     {
         AvaloniaList<HousingType> housingTypes = new AvaloniaList<HousingType>();
 
-        using (MySqlConnection connection = new MySqlConnection(_connectionString))
+        using (MySqlConnection connection = new MySqlConnection(ConnectionString))
         {
             try
             {
@@ -81,5 +79,9 @@ public class HousingTypeViewModel: ViewModelBase
     
     public void OnDelete(HousingType housingType) {
         HousingType.Remove(housingType);
+    }
+    
+    public void OnEdit(HousingType housingType) {
+        HousingType.Replace(HousingTypeSelectedItem, housingType);
     }
 }

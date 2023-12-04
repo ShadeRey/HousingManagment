@@ -1,0 +1,48 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:HousingManagment.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="HousingManagment.Views.ResidentialPropertyView"
+             x:DataType="viewModels:ResidentialPropertyViewModel">
+    <Design.DataContext>
+        <viewModels:ResidentialPropertyViewModel />
+    </Design.DataContext>
+    <DockPanel HorizontalAlignment="Stretch" LastChildFill="True">
+        <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Left">
+            <Button Classes="Primary"
+                    Width="100"
+                    Foreground="White"
+                    x:Name="ResidentialPropertyAdd"
+                    Content="Добавить"
+                    Click="ResidentialPropertyAdd_OnClick" />
+        </StackPanel>
+        <DataGrid Width="800"
+                  Margin="-100 0 0 0"
+                  HorizontalAlignment="Left"
+                  IsReadOnly="True"
+                  ItemsSource="{Binding ResidentialProperty }"
+                  SelectedItem="{Binding ResidentialPropertySelectedItem}">
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Изменить" Name="ResidentialPropertyEdit"
+                              Click="ResidentialPropertyEdit_OnClick" />
+                    <MenuItem Header="Удалить" Name="ResidentialPropertyDelete"
+                              Click="ResidentialPropertyDelete_OnClick" />
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="*" Header="ID" Binding="{Binding ID}" />
+                <DataGridTextColumn Width="*" Header="Address" Binding="{Binding Address}" />
+                <DataGridTextColumn Width="*" Header="Square"
+                                    Binding="{Binding Square, StringFormat={}{0} m²}" />
+                <DataGridTextColumn Width="*" Header="Number of rooms" Binding="{Binding NumberOfRooms}" />
+                <DataGridTextColumn Width="*" Header="Housing type" Binding="{Binding HousingName}" />
+                <DataGridTextColumn Width="*" Header="Payment"
+                                    Binding="{Binding PaymentMethod, StringFormat={}{0}$}" />
+                <DataGridTextColumn Width="*" Header="Work" Binding="{Binding WorkDescription}" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</UserControl>

@@ -1,0 +1,39 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:HousingManagment.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="HousingManagment.Views.HousingTypeView"
+             x:DataType="viewModels:HousingTypeViewModel">
+    <Design.DataContext>
+        <viewModels:HousingTypeViewModel />
+    </Design.DataContext>
+    <DockPanel HorizontalAlignment="Stretch" LastChildFill="True">
+        <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Left">
+            <Button Classes="Primary"
+                    Width="100"
+                    Foreground="White"
+                    x:Name="HousingTypeAdd"
+                    Content="Добавить"
+                    Click="HousingTypeAdd_OnClick" />
+        </StackPanel>
+        <DataGrid Width="600"
+                  Margin="-100 0 0 0"
+                  HorizontalAlignment="Left"
+                  IsReadOnly="True"
+                  ItemsSource="{Binding HousingType}"
+                  SelectedItem="{Binding HousingTypeSelectedItem}">
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Изменить" Name="HousingTypeEdit" Click="HousingTypeEdit_OnClick" />
+                    <MenuItem Header="Удалить" Name="HousingTypeDelete" Click="HousingTypeDelete_OnClick" />
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="*" Header="ID" Binding="{Binding ID}" />
+                <DataGridTextColumn Width="*" Header="Name" Binding="{Binding Name}" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</UserControl>

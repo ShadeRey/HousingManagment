@@ -4,10 +4,9 @@ using MySqlConnector;
 
 namespace HousingManagment.DataBaseCommands; 
 
-public class DatabaseManagerAdd {
-    public static readonly string ConnectionString
-        = "server=10.10.1.24;user=user_01;password=user01pro;database=pro1_23;";
-        // = "Server=localhost;Database=UP;User Id=root;Password=sharaga228;";
+public class DatabaseManagerAdd
+{
+    public static readonly string ConnectionString = DatabaseManagerConnectionString.ConnectionString;
 
     public int InsertData(string tableName, params MySqlParameter[] parameters) {
         using MySqlConnection connection = new MySqlConnection(ConnectionString);

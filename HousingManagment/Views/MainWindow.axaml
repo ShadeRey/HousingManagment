@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+        xmlns:views="clr-namespace:HousingManagment.Views"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="HousingManagment.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
@@ -24,144 +25,24 @@
     <controls:InteractiveContainer Name="DialogContainer">
         <TabControl x:Name="HousingControl">
             <TabItem Header="Housing type">
-                <DockPanel HorizontalAlignment="Stretch" LastChildFill="True">
-                    <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Left">
-                        <Button Classes="Primary"
-                                Width="100"
-                                Foreground="White"
-                                x:Name="HousingTypeAdd"
-                                Content="Добавить"
-                                Click="HousingTypeAdd_OnClick" />
-                    </StackPanel>
-                    <DataGrid Width="600"
-                              Margin="-100 0 0 0"
-                              HorizontalAlignment="Left"
-                              IsReadOnly="True"
-                              DataContext="{Binding HousingTypeViewModel}"
-                              ItemsSource="{Binding HousingType}"
-                              SelectedItem="{Binding HousingTypeSelectedItem}">
-                        <DataGrid.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Header="Изменить" Name="HousingTypeEdit" Click="HousingTypeEdit_OnClick"/>
-                                <MenuItem Header="Удалить" Name="HousingTypeDelete" Click="HousingTypeDelete_OnClick"/>
-                            </ContextMenu>
-                        </DataGrid.ContextMenu>
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Width="*" Header="ID" Binding="{Binding ID}" />
-                            <DataGridTextColumn Width="*" Header="Name" Binding="{Binding Name}" />
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </DockPanel>
+                <views:HousingTypeView
+                    DataContext="{Binding HousingTypeViewModel}"/>
             </TabItem>
             <TabItem Header="Maintenance work">
-                <DockPanel HorizontalAlignment="Stretch" LastChildFill="True">
-                    <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Left">
-                        <Button Classes="Primary"
-                                Width="100"
-                                Foreground="White"
-                                x:Name="MaintenanceWorkAdd"
-                                Content="Добавить"
-                                Click="MaintenanceWorkAdd_OnClick" />
-                    </StackPanel>
-                    <DataGrid Width="600"
-                              Margin="-100 0 0 0"
-                              HorizontalAlignment="Left"
-                              IsReadOnly="True"
-                              DataContext="{Binding MaintenanceWorkViewModel}"
-                              ItemsSource="{Binding MaintenanceWork }">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Width="*" Header="ID" Binding="{Binding ID}" />
-                            <DataGridTextColumn Width="*" Header="Description" Binding="{Binding Description}" />
-                            <DataGridTextColumn Width="*" Header="Start date"
-                                                Binding="{Binding StartDate, StringFormat=dd.MM.yyyy}" />
-                            <DataGridTextColumn Width="*" Header="End date"
-                                                Binding="{Binding EndDate, StringFormat=dd.MM.yyyy}" />
-                            <DataGridTextColumn Width="*" Header="Price"
-                                                Binding="{Binding Price, StringFormat={} {0}$}" />
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </DockPanel>
+                <views:MaintenanceWorkView
+                    DataContext="{Binding MaintenanceWorkViewModel}"/>
             </TabItem>
             <TabItem Header="Utility payment">
-                <DockPanel HorizontalAlignment="Stretch" LastChildFill="True">
-                    <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Left">
-                        <Button Classes="Primary"
-                                Width="100"
-                                Foreground="White"
-                                x:Name="UtilityPaymentAdd"
-                                Content="Добавить"
-                                Click="UtilityPaymentAdd_OnClick" />
-                    </StackPanel>
-                    <DataGrid Width="600"
-                              Margin="-100 0 0 0"
-                              HorizontalAlignment="Left"
-                              IsReadOnly="True"
-                              DataContext="{Binding UtilityPaymentViewModel}"
-                              ItemsSource="{Binding UtilityPayment }">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Width="*" Header="ID" Binding="{Binding ID}" />
-                            <DataGridTextColumn Width="*" Header="Sum" Binding="{Binding Sum, StringFormat={}{0}$}" />
-                            <DataGridTextColumn Width="*" Header="Payment date"
-                                                Binding="{Binding PaymentDate, StringFormat=dd.MM.yyyy}" />
-                            <DataGridTextColumn Width="*" Header="Payment method" Binding="{Binding PaymentMethod}" />
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </DockPanel>
+                <views:UtilityPaymentView
+                    DataContext="{Binding UtilityPaymentViewModel}"/>
             </TabItem>
             <TabItem Header="Infrastructure">
-                <DockPanel HorizontalAlignment="Stretch" LastChildFill="True">
-                    <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Left">
-                        <Button Classes="Primary"
-                                Width="100"
-                                Foreground="White"
-                                x:Name="InfrastructureAdd"
-                                Content="Добавить"
-                                Click="InfrastructureAdd_OnClick" />
-                    </StackPanel>
-                    <DataGrid Width="600"
-                              Margin="-100 0 0 0"
-                              HorizontalAlignment="Left"
-                              IsReadOnly="True"
-                              DataContext="{Binding InfrastructureViewModel}"
-                              ItemsSource="{Binding Infrastructure }">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Width="*" Header="ID" Binding="{Binding ID}" />
-                            <DataGridTextColumn Width="*" Header="Type" Binding="{Binding Type}" />
-                            <DataGridTextColumn Width="*" Header="State" Binding="{Binding State}" />
-                            <DataGridTextColumn Width="*" Header="Work" Binding="{Binding WorkDescription}" />
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </DockPanel>
+                <views:InfrastructureView
+                    DataContext="{Binding InfrastructureViewModel}"/>
             </TabItem>
             <TabItem Header="Residential property">
-                <DockPanel HorizontalAlignment="Stretch" LastChildFill="True">
-                    <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Left">
-                        <Button Classes="Primary"
-                                Width="100"
-                                Foreground="White"
-                                x:Name="ResidentialPropertyAdd"
-                                Content="Добавить"
-                                Click="ResidentialPropertyAdd_OnClick" />
-                    </StackPanel>
-                    <DataGrid Width="800"
-                              Margin="-100 0 0 0"
-                              HorizontalAlignment="Left"
-                              IsReadOnly="True"
-                              DataContext="{Binding ResidentialPropertyViewModel}"
-                              ItemsSource="{Binding ResidentialProperty }">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Width="*" Header="ID" Binding="{Binding ID}" />
-                            <DataGridTextColumn Width="*" Header="Address" Binding="{Binding Address}" />
-                            <DataGridTextColumn Width="*" Header="Square"
-                                                Binding="{Binding Square, StringFormat={}{0} m²}" />
-                            <DataGridTextColumn Width="*" Header="Number of rooms" Binding="{Binding NumberOfRooms}" />
-                            <DataGridTextColumn Width="*" Header="Housing type" Binding="{Binding HousingName}" />
-                            <DataGridTextColumn Width="*" Header="Payment"
-                                                Binding="{Binding PaymentMethod, StringFormat={}{0}$}" />
-                            <DataGridTextColumn Width="*" Header="Work" Binding="{Binding WorkDescription}" />
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </DockPanel>
+                <views:ResidentialPropertyView
+                    DataContext="{Binding ResidentialPropertyViewModel}"/>
             </TabItem>
         </TabControl>
     </controls:InteractiveContainer>

@@ -1,0 +1,47 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:HousingManagment.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="HousingManagment.Views.MaintenanceWorkView"
+             x:DataType="viewModels:MaintenanceWorkViewModel">
+    <Design.DataContext>
+        <viewModels:MaintenanceWorkViewModel />
+    </Design.DataContext>
+    <DockPanel HorizontalAlignment="Stretch" LastChildFill="True">
+        <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Left">
+            <Button Classes="Primary"
+                    Width="100"
+                    Foreground="White"
+                    x:Name="MaintenanceWorkAdd"
+                    Content="Добавить"
+                    Click="MaintenanceWorkAdd_OnClick" />
+        </StackPanel>
+        <DataGrid Width="600"
+                  Margin="-100 0 0 0"
+                  HorizontalAlignment="Left"
+                  IsReadOnly="True"
+                  ItemsSource="{Binding MaintenanceWork }"
+                  SelectedItem="{Binding MaintenanceWorkSelectedItem}">
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Изменить" Name="MaintenanceWorkEdit"
+                              Click="MaintenanceWorkEdit_OnClick" />
+                    <MenuItem Header="Удалить" Name="MaintenanceWorkDelete"
+                              Click="MaintenanceWorkDelete_OnClick" />
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="*" Header="ID" Binding="{Binding ID}" />
+                <DataGridTextColumn Width="*" Header="Description" Binding="{Binding Description}" />
+                <DataGridTextColumn Width="*" Header="Start date"
+                                    Binding="{Binding StartDate, StringFormat=dd.MM.yyyy}" />
+                <DataGridTextColumn Width="*" Header="End date"
+                                    Binding="{Binding EndDate, StringFormat=dd.MM.yyyy}" />
+                <DataGridTextColumn Width="*" Header="Price"
+                                    Binding="{Binding Price, StringFormat={} {0}$}" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</UserControl>

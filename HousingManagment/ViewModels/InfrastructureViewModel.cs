@@ -1,5 +1,7 @@
 using System;
 using Avalonia.Collections;
+using DynamicData;
+using HousingManagment.DataBaseCommands;
 using HousingManagment.Models;
 using MySqlConnector;
 using ReactiveUI;
@@ -8,14 +10,13 @@ namespace HousingManagment.ViewModels;
 
 public class InfrastructureViewModel: ViewModelBase
 {
-    private const string _connectionString = "server=10.10.1.24;user=user_01;password=user01pro;database=pro1_23;";
-    // private const string _connectionString = "Server=localhost;Database=UP;User Id=root;Password=sharaga228;";
+    public static readonly string ConnectionString = DatabaseManagerConnectionString.ConnectionString;
 
     public AvaloniaList<Infrastructure> GetInfrastructuresFromDb()
     {
         AvaloniaList<Infrastructure> infrastructures = new AvaloniaList<Infrastructure>();
 
-        using (MySqlConnection connection = new MySqlConnection(_connectionString))
+        using (MySqlConnection connection = new MySqlConnection(ConnectionString))
         {
             try
             {
@@ -23,7 +24,7 @@ public class InfrastructureViewModel: ViewModelBase
                 string selectAllInfrastructures = """
                                                   SELECT Infrastructure.ID, Type, State, Description
                                                   From Infrastructure
-                                                  join MaintenanceWork on Infrastructure.ID = MaintenanceWork.ID;
+                                                  join MaintenanceWork on Infrastructure.Work = MaintenanceWork.ID;
                                                   """;
                 MySqlCommand cmd = new MySqlCommand(selectAllInfrastructures, connection);
                 MySqlDataReader reader = cmd.ExecuteReader();
@@ -81,5 +82,20 @@ public class InfrastructureViewModel: ViewModelBase
     
     public void OnNew(Infrastructure infrastructure) {
         Infrastructure.Add(infrastructure);
+    }
+    
+    private Infrastructure _infrastructureSelectedItem;
+
+    public Infrastructure InfrastructureSelectedItem {
+        get => _infrastructureSelectedItem;
+        set => this.RaiseAndSetIfChanged(ref _infrastructureSelectedItem, value);
+    }
+    
+    public void OnDelete(Infrastructure infrastructure) {
+        Infrastructure.Remove(infrastructure);
+    }
+    
+    public void OnEdit(Infrastructure infrastructure) {
+        Infrastructure.Replace(InfrastructureSelectedItem, infrastructure);
     }
 }

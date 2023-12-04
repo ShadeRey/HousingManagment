@@ -1,6 +1,7 @@
 using System;
-using System.Data;
 using Avalonia.Collections;
+using DynamicData;
+using HousingManagment.DataBaseCommands;
 using HousingManagment.Models;
 using MySqlConnector;
 using ReactiveUI;
@@ -10,14 +11,13 @@ namespace HousingManagment.ViewModels;
 
 public class ResidentialPropertyViewModel: ViewModelBase, IEnableLogger
 {
-    private const string _connectionString = "server=10.10.1.24;user=user_01;password=user01pro;database=pro1_23;";
-    // private const string _connectionString = "Server=localhost;Database=UP;User Id=root;Password=sharaga228;";
+    public static readonly string ConnectionString = DatabaseManagerConnectionString.ConnectionString;
 
     public AvaloniaList<ResidentialProperty> GetResidentialPropertiesFromDb()
     {
         AvaloniaList<ResidentialProperty> residentialProperties = new AvaloniaList<ResidentialProperty>();
 
-        using (MySqlConnection connection = new MySqlConnection(_connectionString))
+        using (MySqlConnection connection = new MySqlConnection(ConnectionString))
         {
             try
             {
@@ -25,9 +25,9 @@ public class ResidentialPropertyViewModel: ViewModelBase, IEnableLogger
                 string selectAllResidentialProperties = """
                                                         SELECT ResidentialProperty.ID, Address, Square, NumberOfRooms, Name, Sum, Description
                                                         From ResidentialProperty
-                                                            join MaintenanceWork on ResidentialProperty.ID = MaintenanceWork.ID
-                                                            join HousingType on ResidentialProperty.ID = HousingType.ID
-                                                            join UtilityPayment on ResidentialProperty.ID = UtilityPayment.ID;
+                                                            join MaintenanceWork on ResidentialProperty.Work = MaintenanceWork.ID
+                                                            join HousingType on ResidentialProperty.HousingType = HousingType.ID
+                                                            join UtilityPayment on ResidentialProperty.Payment = UtilityPayment.ID;
                                                         """;
                 MySqlCommand cmd = new MySqlCommand(selectAllResidentialProperties, connection);
                 MySqlDataReader reader = cmd.ExecuteReader();
@@ -100,5 +100,20 @@ public class ResidentialPropertyViewModel: ViewModelBase, IEnableLogger
     
     public void OnNew(ResidentialProperty residentialProperty) {
         ResidentialProperty.Add(residentialProperty);
+    }
+    
+    private ResidentialProperty _residentialPropertySelectedItem;
+
+    public ResidentialProperty ResidentialPropertySelectedItem {
+        get => _residentialPropertySelectedItem;
+        set => this.RaiseAndSetIfChanged(ref _residentialPropertySelectedItem, value);
+    }
+    
+    public void OnDelete(ResidentialProperty residentialProperty) {
+        ResidentialProperty.Remove(residentialProperty);
+    }
+    
+    public void OnEdit(ResidentialProperty residentialProperty) {
+        ResidentialProperty.Replace(ResidentialPropertySelectedItem, residentialProperty);
     }
 }

@@ -1,17 +1,21 @@
+﻿using System;
+using System.Linq;
 using MySqlConnector;
 
 namespace HousingManagment.DataBaseCommands;
 
-public class DatabaseManagerDelete
+public class DatabaseManagerEdit
 {
     public static readonly string ConnectionString = DatabaseManagerConnectionString.ConnectionString;
 
-    public void DeleteData(string tableName, int id) {
+    public void EditData(string tableName, int id, params MySqlParameter[] parameters) {
         using MySqlConnection connection = new MySqlConnection(ConnectionString);
         connection.Open();
         using MySqlCommand command = connection.CreateCommand();
-        command.CommandText = $"DELETE FROM {tableName} WHERE ID = @Id;";
+        var paramString = string.Join(',', parameters.Select(x => $"{x.ParameterName.Replace("@", "")} = {x.ParameterName}"));
+        command.CommandText = $"UPDATE {tableName} SET {paramString} WHERE ID = @Id;";
         command.Parameters.AddWithValue("@Id", id);
+        command.Parameters.AddRange(parameters);
         command.ExecuteNonQuery();
     }
 }
