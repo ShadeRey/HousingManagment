@@ -97,4 +97,8 @@ public class ResidentialPropertyViewModel: ViewModelBase, IEnableLogger
     {
         ResidentialProperty = GetResidentialPropertiesFromDb();
     }
+    
+    public void OnNew(ResidentialProperty residentialProperty) {
+        ResidentialProperty.Add(residentialProperty);
+    }
 }

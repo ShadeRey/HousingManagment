@@ -9,14 +9,6 @@ public class DatabaseManagerAdd {
         = "server=10.10.1.24;user=user_01;password=user01pro;database=pro1_23;";
         // = "Server=localhost;Database=UP;User Id=root;Password=sharaga228;";
 
-    public DatabaseManagerAdd() {
-    }
-    
-    // public DatabaseManagerAdd(string connectionString)
-    // {
-    //     ConnectionString = connectionString;
-    // }
-
     public int InsertData(string tableName, params MySqlParameter[] parameters) {
         using MySqlConnection connection = new MySqlConnection(ConnectionString);
         connection.Open();

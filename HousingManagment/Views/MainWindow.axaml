@@ -14,6 +14,9 @@
         <Style Selector="DataGridColumnHeader /template/ Grid">
             <Setter Property="HorizontalAlignment" Value="Center" />
         </Style>
+        <Style Selector="ContextMenu /template/ TemplatedControl">
+            <Setter Property="Background" Value="Transparent"></Setter>
+        </Style>
     </Window.Styles>
     <Design.DataContext>
         <vm:MainWindowViewModel />
@@ -36,6 +39,12 @@
                               IsReadOnly="True"
                               DataContext="{Binding HousingTypeViewModel}"
                               ItemsSource="{Binding HousingType}">
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Изменить" />
+                                <MenuItem Header="Удалить" />
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
                         <DataGrid.Columns>
                             <DataGridTextColumn Width="*" Header="ID" Binding="{Binding ID}" />
                             <DataGridTextColumn Width="*" Header="Name" Binding="{Binding Name}" />
@@ -124,7 +133,15 @@
                 </DockPanel>
             </TabItem>
             <TabItem Header="Residential property">
-                <Grid>
+                <DockPanel HorizontalAlignment="Stretch" LastChildFill="True">
+                    <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Left">
+                        <Button Classes="Primary"
+                                Width="100"
+                                Foreground="White"
+                                x:Name="ResidentialPropertyAdd"
+                                Content="Добавить"
+                                Click="ResidentialPropertyAdd_OnClick" />
+                    </StackPanel>
                     <DataGrid Width="800"
                               Margin="-100 0 0 0"
                               HorizontalAlignment="Left"
@@ -143,7 +160,7 @@
                             <DataGridTextColumn Width="*" Header="Work" Binding="{Binding WorkDescription}" />
                         </DataGrid.Columns>
                     </DataGrid>
-                </Grid>
+                </DockPanel>
             </TabItem>
         </TabControl>
     </controls:InteractiveContainer>
