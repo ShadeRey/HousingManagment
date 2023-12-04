@@ -38,11 +38,12 @@
                               HorizontalAlignment="Left"
                               IsReadOnly="True"
                               DataContext="{Binding HousingTypeViewModel}"
-                              ItemsSource="{Binding HousingType}">
+                              ItemsSource="{Binding HousingType}"
+                              SelectedItem="{Binding HousingTypeSelectedItem}">
                         <DataGrid.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="Изменить" />
-                                <MenuItem Header="Удалить" />
+                                <MenuItem Header="Изменить" Name="HousingTypeEdit" Click="HousingTypeEdit_OnClick"/>
+                                <MenuItem Header="Удалить" Name="HousingTypeDelete" Click="HousingTypeDelete_OnClick"/>
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                         <DataGrid.Columns>

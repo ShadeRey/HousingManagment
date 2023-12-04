@@ -71,4 +71,15 @@ public class HousingTypeViewModel: ViewModelBase
     public void OnNew(HousingType housingType) {
         HousingType.Add(housingType);
     }
+
+    private HousingType _housingTypeSelectedItem;
+
+    public HousingType HousingTypeSelectedItem {
+        get => _housingTypeSelectedItem;
+        set => this.RaiseAndSetIfChanged(ref _housingTypeSelectedItem, value);
+    }
+    
+    public void OnDelete(HousingType housingType) {
+        HousingType.Remove(housingType);
+    }
 }

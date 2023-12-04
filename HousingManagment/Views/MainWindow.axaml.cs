@@ -445,4 +445,42 @@ public partial class MainWindow : Window
             }
         });
     }
+
+    private void HousingTypeEdit_OnClick(object? sender, RoutedEventArgs e) {
+        throw new NotImplementedException();
+    }
+
+    private void HousingTypeDelete_OnClick(object? sender, RoutedEventArgs e) {
+        var db = new DatabaseManagerDelete();
+        int housingTypeID = new HousingTypeViewModel().HousingTypeSelectedItem.ID;
+        var delete = ReactiveCommand.Create<HousingType>((i) =>
+        {
+            db.DeleteData(
+                "HousingType",
+                housingTypeID
+            );
+            (DataContext as MainWindowViewModel)!.HousingTypeViewModel.OnDelete(i);
+        });
+
+        InteractiveContainer.ShowDialog(new StackPanel()
+        {
+            DataContext = new HousingType(),
+            Children =
+            {
+                new Button()
+                {
+                    Content = "Да",
+                    Classes = { "Primary" },
+                    Command = delete,
+                    Foreground = Brushes.White,
+                    [!Button.CommandParameterProperty] = new Binding(".")
+                },
+                new Button()
+                {
+                    Content = "Закрыть",
+                    Command = ReactiveCommand.Create(InteractiveContainer.CloseDialog)
+                }
+            }
+        });
+    }
 }
