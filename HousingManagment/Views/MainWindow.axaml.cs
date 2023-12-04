@@ -25,6 +25,8 @@ public partial class MainWindow : Window
         DataContext = new MainWindowViewModel();
     }
 
+    public MainWindowViewModel ViewModel => (DataContext as MainWindowViewModel)!;
+
     private void HousingTypeAdd_OnClick(object? sender, RoutedEventArgs e)
     {
         var db = new DatabaseManagerAdd();
@@ -451,20 +453,25 @@ public partial class MainWindow : Window
     }
 
     private void HousingTypeDelete_OnClick(object? sender, RoutedEventArgs e) {
+        if (ViewModel.HousingTypeViewModel.HousingTypeSelectedItem is null)
+        {
+            return;
+        }
         var db = new DatabaseManagerDelete();
-        int housingTypeID = new HousingTypeViewModel().HousingTypeSelectedItem.ID;
+        int housingTypeId = ViewModel.HousingTypeViewModel.HousingTypeSelectedItem.ID;
         var delete = ReactiveCommand.Create<HousingType>((i) =>
         {
             db.DeleteData(
                 "HousingType",
-                housingTypeID
+                housingTypeId
             );
             (DataContext as MainWindowViewModel)!.HousingTypeViewModel.OnDelete(i);
+            InteractiveContainer.CloseDialog();
         });
 
         InteractiveContainer.ShowDialog(new StackPanel()
         {
-            DataContext = new HousingType(),
+            DataContext = ViewModel.HousingTypeViewModel.HousingTypeSelectedItem,
             Children =
             {
                 new Button()
