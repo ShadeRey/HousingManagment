@@ -10,15 +10,50 @@
         <viewModels:ResidentialPropertyViewModel />
     </Design.DataContext>
     <DockPanel HorizontalAlignment="Stretch" LastChildFill="True">
-        <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Left">
+        <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Left" Orientation="Horizontal">
             <Button Classes="Primary"
                     Width="100"
                     Foreground="White"
                     x:Name="ResidentialPropertyAdd"
                     Content="Добавить"
                     Click="ResidentialPropertyAdd_OnClick" />
+            <TextBox
+                Name="ResidentialPropertySearch"
+                TextChanged="ResidentialPropertySearch_OnTextChanged"
+                Watermark="Поиск" />
+            <ComboBox
+                Width="180"
+                Name="ResidentalPropertyFilter"
+                PlaceholderText="Select an item"
+                SelectionChanged="ResidentalPropertyFilter_OnSelectionChanged">
+                <ComboBoxItem>
+                    <TextBlock>Все столбцы</TextBlock>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <TextBlock>Код</TextBlock>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <TextBlock>Адрес</TextBlock>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <TextBlock>Площадь</TextBlock>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <TextBlock>Комнаты</TextBlock>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <TextBlock>Тип помещения</TextBlock>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <TextBlock>Сумма</TextBlock>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <TextBlock>Работа</TextBlock>
+                </ComboBoxItem>
+            </ComboBox>
         </StackPanel>
-        <DataGrid Width="800"
+        <DataGrid Name="ResidentialPropertyGrid"
+                  Width="800"
                   Margin="-100 0 0 0"
                   HorizontalAlignment="Left"
                   IsReadOnly="True"

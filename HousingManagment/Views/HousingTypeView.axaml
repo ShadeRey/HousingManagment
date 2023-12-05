@@ -10,15 +10,35 @@
         <viewModels:HousingTypeViewModel />
     </Design.DataContext>
     <DockPanel HorizontalAlignment="Stretch" LastChildFill="True">
-        <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Left">
+        <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Left" Orientation="Horizontal">
             <Button Classes="Primary"
                     Width="100"
                     Foreground="White"
                     x:Name="HousingTypeAdd"
                     Content="Добавить"
                     Click="HousingTypeAdd_OnClick" />
+            <TextBox
+                Name="HousingTypeSearch"
+                TextChanged="HousingTypeSearch_OnTextChanged"
+                Watermark="Поиск" />
+            <ComboBox
+                Width="180"
+                Name="HousingTypeFilter"
+                PlaceholderText="Select an item"
+                SelectionChanged="HousingTypeFilter_OnSelectionChanged">
+                <ComboBoxItem>
+                    <TextBlock>Все столбцы</TextBlock>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <TextBlock>Код</TextBlock>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <TextBlock>Название</TextBlock>
+                </ComboBoxItem>
+            </ComboBox>
         </StackPanel>
-        <DataGrid Width="600"
+        <DataGrid Name="HousingTypeGrid"
+                  Width="600"
                   Margin="-100 0 0 0"
                   HorizontalAlignment="Left"
                   IsReadOnly="True"

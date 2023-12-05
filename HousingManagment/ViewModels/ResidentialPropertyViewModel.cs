@@ -116,4 +116,12 @@ public class ResidentialPropertyViewModel: ViewModelBase, IEnableLogger
     public void OnEdit(ResidentialProperty residentialProperty) {
         ResidentialProperty.Replace(ResidentialPropertySelectedItem, residentialProperty);
     }
+    
+    private AvaloniaList<ResidentialProperty> _residentialPropertiesPreSearch;
+
+    public AvaloniaList<ResidentialProperty> ResidentialPropertiesPreSearch
+    {
+        get => _residentialPropertiesPreSearch;
+        set => this.RaiseAndSetIfChanged(ref _residentialPropertiesPreSearch, value);
+    }
 }

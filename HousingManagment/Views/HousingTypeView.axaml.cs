@@ -1,4 +1,5 @@
-﻿using Avalonia.Controls;
+﻿using System.Linq;
+using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
@@ -156,4 +157,61 @@ public partial class HousingTypeView : UserControl
             }
         });
     }
+
+    private void HousingTypeSearch_OnTextChanged(object? sender, TextChangedEventArgs e)
+    {
+        if (ViewModel.HousingTypesPreSearch is null)
+        {
+            ViewModel.HousingTypesPreSearch = ViewModel.HousingType;
+        }
+
+        if (HousingTypeSearch.Text is null)
+        {
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(HousingTypeSearch.Text))
+        {
+            HousingTypeGrid.ItemsSource = ViewModel.HousingTypesPreSearch;
+            return;
+        }
+
+        Filter();
+    }
+
+    private void Filter()
+    {
+        if (HousingTypeSearch.Text is null)
+        {
+            return;
+        }
+        else
+        {
+            if (HousingTypeFilter.SelectedIndex == 0)
+            {
+                var filtered = ViewModel.HousingTypesPreSearch.Where(
+                    it => it.ID.ToString().Contains(HousingTypeSearch.Text)
+                          || it.Name.ToLower().Contains(HousingTypeSearch.Text)
+                ).ToList();
+                filtered = filtered.OrderBy(id => id.ID).ToList();
+                HousingTypeGrid.ItemsSource = filtered;
+            }
+            else if (HousingTypeFilter.SelectedIndex == 1)
+            {
+                var filtered = ViewModel.HousingTypesPreSearch
+                    .Where(it => it.ID.ToString().Contains(HousingTypeSearch.Text)).ToList();
+                filtered = filtered.OrderBy(id => id.ID).ToList();
+                HousingTypeGrid.ItemsSource = filtered;
+            }
+            else if (HousingTypeFilter.SelectedIndex == 2)
+            {
+                var filtered = ViewModel.HousingTypesPreSearch
+                    .Where(it => it.Name.ToLower().Contains(HousingTypeSearch.Text)).ToList();
+                filtered = filtered.OrderBy(name => name.Name).ToList();
+                HousingTypeGrid.ItemsSource = filtered;
+            }
+        }
+    }
+
+    private void HousingTypeFilter_OnSelectionChanged(object? sender, SelectionChangedEventArgs e) => Filter();
 }

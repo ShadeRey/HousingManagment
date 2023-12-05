@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Avalonia.Collections;
 using DynamicData;
 using HousingManagment.DataBaseCommands;
@@ -83,5 +84,13 @@ public class HousingTypeViewModel: ViewModelBase
     
     public void OnEdit(HousingType housingType) {
         HousingType.Replace(HousingTypeSelectedItem, housingType);
+    }
+
+    private AvaloniaList<HousingType> _housingTypesPreSearch;
+
+    public AvaloniaList<HousingType> HousingTypesPreSearch
+    {
+        get => _housingTypesPreSearch;
+        set => this.RaiseAndSetIfChanged(ref _housingTypesPreSearch, value);
     }
 }
