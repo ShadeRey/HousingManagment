@@ -1,4 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Interactivity;
@@ -19,9 +23,9 @@ public partial class HousingTypeView : UserControl
     {
         InitializeComponent();
     }
-    
+
     public HousingTypeViewModel ViewModel => (DataContext as HousingTypeViewModel)!;
-    
+
     private void HousingTypeAdd_OnClick(object? sender, RoutedEventArgs e)
     {
         var db = new DatabaseManagerAdd();
@@ -65,8 +69,9 @@ public partial class HousingTypeView : UserControl
             }
         });
     }
-    
-    private void HousingTypeEdit_OnClick(object? sender, RoutedEventArgs e) {
+
+    private void HousingTypeEdit_OnClick(object? sender, RoutedEventArgs e)
+    {
         var db = new DatabaseManagerEdit();
         int housingTypeId = ViewModel.HousingTypeSelectedItem.ID;
         var edit = ReactiveCommand.Create<HousingType>((i) =>
@@ -87,7 +92,7 @@ public partial class HousingTypeView : UserControl
         {
             DataContext = new HousingType()
             {
-                ID = ViewModel.HousingTypeSelectedItem.ID, 
+                ID = ViewModel.HousingTypeSelectedItem.ID,
                 Name = ViewModel.HousingTypeSelectedItem.Name
             },
             Children =
@@ -112,12 +117,14 @@ public partial class HousingTypeView : UserControl
             }
         });
     }
-    
-    private void HousingTypeDelete_OnClick(object? sender, RoutedEventArgs e) {
+
+    private void HousingTypeDelete_OnClick(object? sender, RoutedEventArgs e)
+    {
         if (ViewModel.HousingTypeSelectedItem is null)
         {
             return;
         }
+
         var db = new DatabaseManagerDelete();
         int housingTypeId = ViewModel.HousingTypeSelectedItem.ID;
         var delete = ReactiveCommand.Create<HousingType>((i) =>
@@ -158,8 +165,13 @@ public partial class HousingTypeView : UserControl
         });
     }
 
-    private void HousingTypeSearch_OnTextChanged(object? sender, TextChangedEventArgs e)
+    private async void HousingTypeSearch_OnTextChanged(object? sender, TextChangedEventArgs e)
     {
+        if (!HousingTypeWP.IsVisible)
+        {
+            await StartLoadingAsync();
+        }
+
         if (ViewModel.HousingTypesPreSearch is null)
         {
             ViewModel.HousingTypesPreSearch = ViewModel.HousingType;
@@ -177,6 +189,33 @@ public partial class HousingTypeView : UserControl
         }
 
         Filter();
+    }
+
+    private async Task StartLoadingAsync()
+    {
+        HousingTypeWP.Value = 0;
+        HousingTypeGrid.IsVisible = false;
+        HousingTypeWP.IsVisible = true;
+
+        Random random = new Random();
+        HashSet<int> generatedNumbers = new HashSet<int>();
+
+        int totalUniqueValues = 101;
+
+        for (int nextNumber = 0; nextNumber < 100; nextNumber = random.Next(nextNumber, totalUniqueValues))
+        {
+            await Task.Delay(1000);
+            generatedNumbers.Add(nextNumber);
+            HousingTypeWP.Value = nextNumber;
+            Console.WriteLine($"Прогресс: {nextNumber}%");
+        }
+
+
+        HousingTypeWP.IsVisible = false;
+        HousingTypeGrid.IsVisible = true;
+        HousingTypeWP.Value = 0;
+
+        Console.WriteLine("Загрузка завершена.");
     }
 
     private void Filter()

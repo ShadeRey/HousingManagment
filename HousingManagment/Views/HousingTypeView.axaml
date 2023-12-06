@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:HousingManagment.ViewModels"
+             xmlns:controls="clr-namespace:SukiUI.Controls;assembly=SukiUI"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="HousingManagment.Views.HousingTypeView"
              x:DataType="viewModels:HousingTypeViewModel">
@@ -37,23 +38,31 @@
                 </ComboBoxItem>
             </ComboBox>
         </StackPanel>
-        <DataGrid Name="HousingTypeGrid"
-                  Width="600"
-                  Margin="-100 0 0 0"
-                  HorizontalAlignment="Left"
-                  IsReadOnly="True"
-                  ItemsSource="{Binding HousingType}"
-                  SelectedItem="{Binding HousingTypeSelectedItem}">
-            <DataGrid.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="Изменить" Name="HousingTypeEdit" Click="HousingTypeEdit_OnClick" />
-                    <MenuItem Header="Удалить" Name="HousingTypeDelete" Click="HousingTypeDelete_OnClick" />
-                </ContextMenu>
-            </DataGrid.ContextMenu>
-            <DataGrid.Columns>
-                <DataGridTextColumn Width="*" Header="ID" Binding="{Binding ID}" />
-                <DataGridTextColumn Width="*" Header="Name" Binding="{Binding Name}" />
-            </DataGrid.Columns>
-        </DataGrid>
+        <Panel>
+            <controls:WaveProgress
+                Name="HousingTypeWP"
+                IsVisible="False" 
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"/>
+
+            <DataGrid Name="HousingTypeGrid"
+                      Width="600"
+                      Margin="-100 0 0 0"
+                      HorizontalAlignment="Left"
+                      IsReadOnly="True"
+                      ItemsSource="{Binding HousingType}"
+                      SelectedItem="{Binding HousingTypeSelectedItem}">
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Изменить" Name="HousingTypeEdit" Click="HousingTypeEdit_OnClick" />
+                        <MenuItem Header="Удалить" Name="HousingTypeDelete" Click="HousingTypeDelete_OnClick" />
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Width="*" Header="ID" Binding="{Binding ID}" />
+                    <DataGridTextColumn Width="*" Header="Name" Binding="{Binding Name}" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Panel>
     </DockPanel>
 </UserControl>

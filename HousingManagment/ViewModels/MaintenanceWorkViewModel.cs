@@ -98,4 +98,12 @@ public class MaintenanceWorkViewModel: ViewModelBase
     public void OnEdit(MaintenanceWork maintenanceWork) {
         MaintenanceWork.Replace(MaintenanceWorkSelectedItem, maintenanceWork);
     }
+    
+    private AvaloniaList<MaintenanceWork> _maintenanceWorksPreSearch;
+
+    public AvaloniaList<MaintenanceWork> MaintenanceWorksPreSearch
+    {
+        get => _maintenanceWorksPreSearch;
+        set => this.RaiseAndSetIfChanged(ref _maintenanceWorksPreSearch, value);
+    }
 }
