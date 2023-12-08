@@ -3,42 +3,97 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:HousingManagment.ViewModels"
+             xmlns:controls="clr-namespace:SukiUI.Controls;assembly=SukiUI"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="HousingManagment.Views.UtilityPaymentView"
              x:DataType="viewModels:UtilityPaymentViewModel">
     <Design.DataContext>
         <viewModels:UtilityPaymentViewModel />
     </Design.DataContext>
+    <UserControl.Styles>
+        <Style Selector="TextBlock#CellTextBlock">
+            <Setter Property="Foreground" Value="#e6e9e2"></Setter>
+        </Style>
+        <Style Selector="TextBlock">
+            <Setter Property="Foreground" Value="#e6e9e2"></Setter>
+        </Style>
+    </UserControl.Styles>
     <DockPanel HorizontalAlignment="Stretch" LastChildFill="True">
-        <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Left">
-            <Button Classes="Primary"
-                    Width="100"
-                    Foreground="White"
-                    x:Name="UtilityPaymentAdd"
-                    Content="Добавить"
-                    Click="UtilityPaymentAdd_OnClick" />
+        <StackPanel>
+            <Border
+                Width="400"
+                Margin="0 0 0 20"
+                Background="#24272c"
+                CornerRadius="10">
+                <StackPanel
+                    DockPanel.Dock="Top"
+                    HorizontalAlignment="Left"
+                    Orientation="Horizontal">
+                    <Button Classes="Primary"
+                            Width="113"
+                            Foreground="White"
+                            x:Name="UtilityPaymentAdd"
+                            Content="Добавить"
+                            Command="{Binding AddUtilityPaymentToDB}" />
+                    <TextBox
+                        Name="UtilityPaymentSearch"
+                        TextChanged="UtilityPaymentSearch_OnTextChanged"
+                        Watermark="Поиск">
+                    </TextBox>
+                    <ComboBox
+                        Width="180"
+                        Name="UtilityPaymentFilter"
+                        PlaceholderText="Фильтровать по..."
+                        SelectionChanged="UtilityPaymentFilter_OnSelectionChanged">
+                        <ComboBoxItem>
+                            <TextBlock Foreground="Black">Все столбцы</TextBlock>
+                        </ComboBoxItem>
+                        <ComboBoxItem>
+                            <TextBlock Foreground="Black">Код</TextBlock>
+                        </ComboBoxItem>
+                        <ComboBoxItem>
+                            <TextBlock Foreground="Black">Дата оплаты</TextBlock>
+                        </ComboBoxItem>
+                        <ComboBoxItem>
+                            <TextBlock Foreground="Black">Метод оплаты</TextBlock>
+                        </ComboBoxItem>
+                    </ComboBox>
+                </StackPanel>
+            </Border>
+            <Panel>
+                <Border
+                    Background="#24272c"
+                    CornerRadius="10"
+                    Width="950"
+                    Height="400">
+                    <DataGrid Name="UtilityPaymentGrid"
+                              Width="950"
+                              HorizontalAlignment="Left"
+                              IsReadOnly="True"
+                              ItemsSource="{Binding UtilityPayment }"
+                              SelectedItem="{Binding UtilityPaymentSelectedItem}">
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Изменить" Name="UtilityPaymentEdit"
+                                          Command="{Binding EditUtilityPaymentInDB}" />
+                                <MenuItem Header="Удалить" Name="UtilityPaymentDelete"
+                                          Command="{Binding DeleteUtilityPaymentFromDB}" />
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Width="*" Header="ID" Binding="{Binding ID}" />
+                            <DataGridTextColumn Width="*" Header="Sum" Binding="{Binding Sum, StringFormat={}{0}$}" />
+                            <DataGridTextColumn Width="*" Header="Payment date"
+                                                Binding="{Binding PaymentDate, StringFormat=dd.MM.yyyy}" />
+                            <DataGridTextColumn Width="*" Header="Payment method" Binding="{Binding PaymentMethod}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
+                <controls:WaveProgress
+                    Name="UtilityPaymentWP"
+                    DockPanel.Dock="Top"
+                    IsVisible="False" />
+            </Panel>
         </StackPanel>
-        <DataGrid Width="600"
-                  Margin="-100 0 0 0"
-                  HorizontalAlignment="Left"
-                  IsReadOnly="True"
-                  ItemsSource="{Binding UtilityPayment }"
-                  SelectedItem="{Binding UtilityPaymentSelectedItem}">
-            <DataGrid.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="Изменить" Name="UtilityPaymentEdit"
-                              Click="UtilityPaymentEdit_OnClick" />
-                    <MenuItem Header="Удалить" Name="UtilityPaymentDelete"
-                              Click="UtilityPaymentDelete_OnClick" />
-                </ContextMenu>
-            </DataGrid.ContextMenu>
-            <DataGrid.Columns>
-                <DataGridTextColumn Width="*" Header="ID" Binding="{Binding ID}" />
-                <DataGridTextColumn Width="*" Header="Sum" Binding="{Binding Sum, StringFormat={}{0}$}" />
-                <DataGridTextColumn Width="*" Header="Payment date"
-                                    Binding="{Binding PaymentDate, StringFormat=dd.MM.yyyy}" />
-                <DataGridTextColumn Width="*" Header="Payment method" Binding="{Binding PaymentMethod}" />
-            </DataGrid.Columns>
-        </DataGrid>
     </DockPanel>
 </UserControl>

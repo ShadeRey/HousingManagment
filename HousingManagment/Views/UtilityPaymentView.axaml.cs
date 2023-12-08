@@ -1,14 +1,9 @@
-﻿using Avalonia.Controls;
-using Avalonia.Data;
-using Avalonia.Interactivity;
-using Avalonia.Layout;
-using Avalonia.Media;
-using HousingManagment.DataBaseCommands;
-using HousingManagment.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Avalonia.Controls;
 using HousingManagment.ViewModels;
-using MySqlConnector;
-using ReactiveUI;
-using SukiUI.Controls;
 
 namespace HousingManagment.Views;
 
@@ -20,178 +15,102 @@ public partial class UtilityPaymentView : UserControl
     }
     
     public UtilityPaymentViewModel ViewModel => (DataContext as UtilityPaymentViewModel)!;
-    
-    private void UtilityPaymentAdd_OnClick(object? sender, RoutedEventArgs e)
+
+    private async void UtilityPaymentSearch_OnTextChanged(object? sender, TextChangedEventArgs e)
     {
-        var db = new DatabaseManagerAdd();
-
-        var add = ReactiveCommand.Create<UtilityPayment>((i) =>
+        if (!UtilityPaymentWP.IsVisible)
         {
-            var newId = db.InsertData(
-                "UtilityPayment",
-                new MySqlParameter("@Sum", MySqlDbType.Decimal)
-                {
-                    Value = i.Sum
-                },
-                new MySqlParameter("@PaymentDate", MySqlDbType.Date)
-                {
-                    Value = i.PaymentDate
-                },
-                new MySqlParameter("@PaymentMethod", MySqlDbType.String)
-                {
-                    Value = i.PaymentMethod
-                }
-            );
-            i.ID = newId;
-            ViewModel.OnNew(i);
-        });
+            await StartLoadingAsync();
+        }
 
-        InteractiveContainer.ShowDialog(new StackPanel()
+        if (ViewModel.UtilityPaymentsPreSearch is null)
         {
-            DataContext = new UtilityPayment(),
-            Children =
-            {
-                new TextBox()
-                {
-                    Watermark = "Sum($):",
-                    [!TextBox.TextProperty] = new Binding("Sum"),
-                    Classes = { "Prefix" }
-                },
-                new DatePicker()
-                {
-                    [!DatePicker.SelectedDateProperty] = new Binding("PaymentDate")
-                },
-                new TextBox()
-                {
-                    Watermark = "PaymentMethod",
-                    [!TextBox.TextProperty] = new Binding("PaymentMethod")
-                },
-                new Button()
-                {
-                    Content = "Добавить",
-                    Classes = { "Primary" },
-                    Command = add,
-                    Foreground = Brushes.White,
-                    [!Button.CommandParameterProperty] = new Binding(".")
-                },
-                new Button()
-                {
-                    Content = "Закрыть",
-                    Command = ReactiveCommand.Create(InteractiveContainer.CloseDialog)
-                }
-            }
-        });
-    }
-    
-    private void UtilityPaymentEdit_OnClick(object? sender, RoutedEventArgs e)
-    {
-        var db = new DatabaseManagerEdit();
-        int utilityPaymentId = ViewModel.UtilityPaymentSelectedItem.ID;
-        var edit = ReactiveCommand.Create<UtilityPayment>((i) =>
-        {
-            db.EditData(
-                "UtilityPayment",
-                utilityPaymentId,
-                new MySqlParameter("@Sum", MySqlDbType.Decimal)
-                {
-                    Value = i.Sum
-                },
-                new MySqlParameter("PaymentDate", MySqlDbType.DateTime)
-                {
-                    Value = i.PaymentMethod
-                },
-                new MySqlParameter("PaymentMethod", MySqlDbType.String)
-                {
-                    Value = i.PaymentMethod
-                }
-            );
-            ViewModel.OnEdit(i);
-            InteractiveContainer.CloseDialog();
-        });
+            ViewModel.UtilityPaymentsPreSearch = ViewModel.UtilityPayment;
+        }
 
-        InteractiveContainer.ShowDialog(new StackPanel()
-        {
-            DataContext = new UtilityPayment()
-            {
-                ID = ViewModel.UtilityPaymentSelectedItem.ID,
-                Sum = ViewModel.UtilityPaymentSelectedItem.Sum,
-                PaymentDate = ViewModel.UtilityPaymentSelectedItem.PaymentDate,
-                PaymentMethod = ViewModel.UtilityPaymentSelectedItem.PaymentMethod
-            },
-            Children =
-            {
-                new TextBox()
-                {
-                    [!TextBox.TextProperty] = new Binding("Sum")
-                },
-                new DatePicker()
-                {
-                    [!DatePicker.SelectedDateProperty] = new Binding("PaymentDate")
-                },
-                new TextBox()
-                {
-                    [!TextBox.TextProperty] = new Binding("PaymentMethod")
-                },
-                new Button()
-                {
-                    Content = "Обновить",
-                    Classes = { "Primary" },
-                    Command = edit,
-                    Foreground = Brushes.White,
-                    [!Button.CommandParameterProperty] = new Binding(".")
-                },
-                new Button()
-                {
-                    Content = "Закрыть",
-                    Command = ReactiveCommand.Create(InteractiveContainer.CloseDialog)
-                }
-            }
-        });
-    }
-
-    private void UtilityPaymentDelete_OnClick(object? sender, RoutedEventArgs e)
-    {
-        if (ViewModel.UtilityPaymentSelectedItem is null)
+        if (UtilityPaymentSearch.Text is null)
         {
             return;
         }
-        var db = new DatabaseManagerDelete();
-        int utilityPaymentId = ViewModel.UtilityPaymentSelectedItem.ID;
-        var delete = ReactiveCommand.Create<UtilityPayment>((i) =>
-        {
-            db.DeleteData(
-                "UtilityPayment",
-                utilityPaymentId
-            );
-            ViewModel.OnDelete(i);
-            InteractiveContainer.CloseDialog();
-        });
 
-        InteractiveContainer.ShowDialog(new StackPanel()
+        if (string.IsNullOrWhiteSpace(UtilityPaymentSearch.Text))
         {
-            DataContext = ViewModel.UtilityPaymentSelectedItem,
-            Children =
-            {
-                new TextBlock()
-                {
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                    Classes = { "h2" },
-                    Text = "Удалить?"
-                },
-                new Button()
-                {
-                    Content = "Да",
-                    Classes = { "Primary" },
-                    Command = delete,
-                    Foreground = Brushes.White,
-                    [!Button.CommandParameterProperty] = new Binding(".")
-                },
-                new Button()
-                {
-                    Content = "Закрыть",
-                    Command = ReactiveCommand.Create(InteractiveContainer.CloseDialog)
-                }
-            }
-        });
+            UtilityPaymentGrid.ItemsSource = ViewModel.UtilityPaymentsPreSearch;
+            return;
+        }
+
+        Filter();
     }
+
+    private async Task StartLoadingAsync()
+    {
+            UtilityPaymentWP.Value = 0;
+            UtilityPaymentGrid.IsVisible = false;
+            UtilityPaymentWP.IsVisible = true;
+
+            Random random = new Random();
+            HashSet<int> generatedNumbers = new HashSet<int>();
+
+            int totalUniqueValues = 101;
+
+            for (int nextNumber = 0; nextNumber < 100; nextNumber = random.Next(nextNumber, totalUniqueValues))
+            {
+                await Task.Delay(1000);
+                generatedNumbers.Add(nextNumber);
+                UtilityPaymentWP.Value = nextNumber;
+                Console.WriteLine($"Прогресс: {nextNumber}%");
+            }
+    }
+
+    private void Filter()
+    {
+        if (UtilityPaymentSearch.Text is null)
+        {
+            return;
+        }
+        else
+        {
+            if (UtilityPaymentFilter.SelectedIndex == 0)
+            {
+                var filtered = ViewModel.UtilityPaymentsPreSearch.Where(
+                    it => it.ID.ToString().Contains(UtilityPaymentSearch.Text)
+                          || it.Sum.ToString().Contains(UtilityPaymentSearch.Text)
+                          || it.PaymentDate.ToString("dd.MM.yyyy").Contains(UtilityPaymentSearch.Text)
+                          || it.PaymentMethod.ToLower().Contains(UtilityPaymentSearch.Text)
+                ).ToList();
+                filtered = filtered.OrderBy(id => id.ID).ToList();
+                UtilityPaymentGrid.ItemsSource = filtered;
+            }
+            else if (UtilityPaymentFilter.SelectedIndex == 1)
+            {
+                var filtered = ViewModel.UtilityPaymentsPreSearch
+                    .Where(it => it.ID.ToString().Contains(UtilityPaymentSearch.Text)).ToList();
+                filtered = filtered.OrderBy(id => id.ID).ToList();
+                UtilityPaymentGrid.ItemsSource = filtered;
+            }
+            else if (UtilityPaymentFilter.SelectedIndex == 2)
+            {
+                var filtered = ViewModel.UtilityPaymentsPreSearch
+                    .Where(it => it.Sum.ToString().Contains(UtilityPaymentSearch.Text)).ToList();
+                filtered = filtered.OrderBy(sum => sum.Sum).ToList();
+                UtilityPaymentGrid.ItemsSource = filtered;
+            }
+            else if (UtilityPaymentFilter.SelectedIndex == 3)
+            {
+                var filtered = ViewModel.UtilityPaymentsPreSearch
+                    .Where(it => it.PaymentDate.ToString("dd.MM.yyyy").Contains(UtilityPaymentSearch.Text)).ToList();
+                filtered = filtered.OrderBy(paymentdate => paymentdate.PaymentDate).ToList();
+                UtilityPaymentGrid.ItemsSource = filtered;
+            }
+            else if (UtilityPaymentFilter.SelectedIndex == 4)
+            {
+                var filtered = ViewModel.UtilityPaymentsPreSearch
+                    .Where(it => it.PaymentMethod.ToLower().Contains(UtilityPaymentSearch.Text)).ToList();
+                filtered = filtered.OrderBy(paymentmethod => paymentmethod.PaymentMethod).ToList();
+                UtilityPaymentGrid.ItemsSource = filtered;
+            }
+        }
+    }
+
+    private void UtilityPaymentFilter_OnSelectionChanged(object? sender, SelectionChangedEventArgs e) => Filter();
 }

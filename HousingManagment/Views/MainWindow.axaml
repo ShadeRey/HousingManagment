@@ -10,7 +10,8 @@
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
         Title="HousingManagment"
-        WindowState="Maximized">
+        WindowState="Maximized"
+        Background="Transparent">
     <Window.Styles>
         <Style Selector="DataGridColumnHeader /template/ Grid">
             <Setter Property="HorizontalAlignment" Value="Center" />
@@ -18,32 +19,100 @@
         <Style Selector="ContextMenu /template/ TemplatedControl">
             <Setter Property="Background" Value="Transparent"></Setter>
         </Style>
+        <Style Selector="TextBlock">
+            <Setter Property="Foreground" Value="#eee7d8"></Setter>
+        </Style>
     </Window.Styles>
     <Design.DataContext>
         <vm:MainWindowViewModel />
     </Design.DataContext>
-    <controls:InteractiveContainer Name="DialogContainer">
-        <TabControl x:Name="HousingControl">
-            <TabItem Header="Housing type">
-                <views:HousingTypeView
-                    DataContext="{Binding HousingTypeViewModel}"/>
-            </TabItem>
-            <TabItem Header="Maintenance work">
-                <views:MaintenanceWorkView
-                    DataContext="{Binding MaintenanceWorkViewModel}"/>
-            </TabItem>
-            <TabItem Header="Utility payment">
-                <views:UtilityPaymentView
-                    DataContext="{Binding UtilityPaymentViewModel}"/>
-            </TabItem>
-            <TabItem Header="Infrastructure">
-                <views:InfrastructureView
-                    DataContext="{Binding InfrastructureViewModel}"/>
-            </TabItem>
-            <TabItem Header="Residential property">
-                <views:ResidentialPropertyView
-                    DataContext="{Binding ResidentialPropertyViewModel}"/>
-            </TabItem>
-        </TabControl>
-    </controls:InteractiveContainer>
+    <Grid>
+        <Border>
+            <Border.Background>
+                <LinearGradientBrush StartPoint="100%,0%" EndPoint="0%,100%">
+                    <GradientStop Color="#020331" Offset="0.1" />
+                    <GradientStop Color="#1c052a" Offset="2.5" />
+                </LinearGradientBrush>
+            </Border.Background>
+            <controls:InteractiveContainer Name="DialogContainer">
+                <TabControl x:Name="HousingControl">
+                    <TabItem>
+                        <TabItem.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image 
+                                        Source="avares://HousingManagment/Logos/icon_housing_type.png"
+                                        Width="18"
+                                        Height="18"/>
+                                    <TextBlock Margin="5 0 0 0">Housing type</TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </TabItem.HeaderTemplate>
+                        <views:HousingTypeView
+                            DataContext="{Binding HousingTypeViewModel}" />
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                <Image 
+                                    Source="avares://HousingManagment/Logos/icon_maintenance_work.png"
+                                    Width="18"
+                                    Height="18"/>
+                                <TextBlock Margin="5 0 0 0">Maintenance work</TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </TabItem.HeaderTemplate>
+                        <views:MaintenanceWorkView
+                            DataContext="{Binding MaintenanceWorkViewModel}" />
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image 
+                                        Source="avares://HousingManagment/Logos/icon_utility_payment.png"
+                                        Width="18"
+                                        Height="18"/>
+                                    <TextBlock Margin="5 0 0 0">Utility payment</TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </TabItem.HeaderTemplate>
+                        <views:UtilityPaymentView
+                            DataContext="{Binding UtilityPaymentViewModel}" />
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image 
+                                        Source="avares://HousingManagment/Logos/icon_infrastructure.png"
+                                        Width="18"
+                                        Height="18"/>
+                                    <TextBlock Margin="5 0 0 0">Infrastructure</TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </TabItem.HeaderTemplate>
+                        <views:InfrastructureView
+                            DataContext="{Binding InfrastructureViewModel}" />
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image 
+                                        Source="avares://HousingManagment/Logos/icon_residential_property.png"
+                                        Width="18"
+                                        Height="18"/>
+                                    <TextBlock Margin="5 0 0 0">Residential property</TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </TabItem.HeaderTemplate>
+                        <views:ResidentialPropertyView
+                            DataContext="{Binding ResidentialPropertyViewModel}" />
+                    </TabItem>
+                </TabControl>
+            </controls:InteractiveContainer>
+        </Border>
+    </Grid>
 </Window>

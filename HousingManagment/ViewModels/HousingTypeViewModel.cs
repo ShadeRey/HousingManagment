@@ -1,19 +1,23 @@
 using System;
-using System.Collections.Generic;
 using Avalonia.Collections;
+using Avalonia.Controls;
+using Avalonia.Data;
+using Avalonia.Layout;
+using Avalonia.Media;
 using DynamicData;
 using HousingManagment.DataBaseCommands;
 using HousingManagment.Models;
 using MySqlConnector;
 using ReactiveUI;
+using SukiUI.Controls;
 
 namespace HousingManagment.ViewModels;
 
 public class HousingTypeViewModel: ViewModelBase
 {
-    public static readonly string ConnectionString = DatabaseManagerConnectionString.ConnectionString;
+    private static readonly string ConnectionString = DatabaseManagerConnectionString.ConnectionString;
 
-    public AvaloniaList<HousingType> GetHousingTypesFromDb()
+    private AvaloniaList<HousingType> GetHousingTypesFromDb()
     {
         AvaloniaList<HousingType> housingTypes = new AvaloniaList<HousingType>();
 
@@ -92,5 +96,144 @@ public class HousingTypeViewModel: ViewModelBase
     {
         get => _housingTypesPreSearch;
         set => this.RaiseAndSetIfChanged(ref _housingTypesPreSearch, value);
+    }
+
+    public void AddHousingTypeToDB()
+    {
+        var db = new DatabaseManagerAdd();
+
+        var add = ReactiveCommand.Create<HousingType>((i) =>
+        {
+            var newId = db.InsertData(
+                "HousingType",
+                new MySqlParameter("@Name", MySqlDbType.String)
+                {
+                    Value = i.Name
+                }
+            );
+            i.ID = newId;
+            OnNew(i);
+        });
+
+        InteractiveContainer.ShowDialog(new StackPanel()
+        {
+            DataContext = new HousingType(),
+            Children =
+            {
+                new TextBox()
+                {
+                    Watermark = "Name",
+                    [!TextBox.TextProperty] = new Binding("Name")
+                },
+                new Button()
+                {
+                    Content = "Добавить",
+                    Classes = { "Primary" },
+                    Command = add,
+                    Foreground = Brushes.White,
+                    [!Button.CommandParameterProperty] = new Binding(".")
+                },
+                new Button()
+                {
+                    Content = "Закрыть",
+                    Command = ReactiveCommand.Create(InteractiveContainer.CloseDialog)
+                }
+            }
+        });
+    }
+
+    public void EditHousingTypeInDB()
+    {
+        var db = new DatabaseManagerEdit();
+        int housingTypeId = HousingTypeSelectedItem.ID;
+        var edit = ReactiveCommand.Create<HousingType>((i) =>
+        {
+            db.EditData(
+                "HousingType",
+                housingTypeId,
+                new MySqlParameter("@Name", MySqlDbType.String)
+                {
+                    Value = i.Name
+                }
+            );
+            OnEdit(i);
+            InteractiveContainer.CloseDialog();
+        });
+
+        InteractiveContainer.ShowDialog(new StackPanel()
+        {
+            DataContext = new HousingType()
+            {
+                ID = HousingTypeSelectedItem.ID,
+                Name = HousingTypeSelectedItem.Name
+            },
+            Children =
+            {
+                new TextBox()
+                {
+                    [!TextBox.TextProperty] = new Binding("Name")
+                },
+                new Button()
+                {
+                    Content = "Обновить",
+                    Classes = { "Primary" },
+                    Command = edit,
+                    Foreground = Brushes.White,
+                    [!Button.CommandParameterProperty] = new Binding(".")
+                },
+                new Button()
+                {
+                    Content = "Закрыть",
+                    Command = ReactiveCommand.Create(InteractiveContainer.CloseDialog)
+                }
+            }
+        });
+    }
+
+    public void DeleteHousingTypeFromDB()
+    {
+        if (HousingTypeSelectedItem is null)
+        {
+            return;
+        }
+
+        var db = new DatabaseManagerDelete();
+        int housingTypeId = HousingTypeSelectedItem.ID;
+        var delete = ReactiveCommand.Create<HousingType>((i) =>
+        {
+            db.DeleteData(
+                "HousingType",
+                housingTypeId
+            );
+            OnDelete(i);
+            InteractiveContainer.CloseDialog();
+        });
+
+        InteractiveContainer.ShowDialog(new StackPanel()
+        {
+            DataContext = HousingTypeSelectedItem,
+            Children =
+            {
+                new TextBlock()
+                {
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    Classes = { "h2" },
+                    Text = "Удалить?"
+                },
+                new Button()
+                {
+                    Content = "Да",
+                    Classes = { "Primary" },
+                    Command = delete,
+                    Foreground = Brushes.White,
+                    [!Button.CommandParameterProperty] = new Binding(".")
+                },
+                new Button()
+                {
+                    Content = "Закрыть",
+                    Command = ReactiveCommand.Create(InteractiveContainer.CloseDialog)
+                }
+            }
+        });
     }
 }

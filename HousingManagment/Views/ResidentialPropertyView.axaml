@@ -3,81 +3,112 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:HousingManagment.ViewModels"
+             xmlns:controls="clr-namespace:SukiUI.Controls;assembly=SukiUI"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="HousingManagment.Views.ResidentialPropertyView"
              x:DataType="viewModels:ResidentialPropertyViewModel">
     <Design.DataContext>
         <viewModels:ResidentialPropertyViewModel />
     </Design.DataContext>
+    <UserControl.Styles>
+        <Style Selector="TextBlock#CellTextBlock">
+            <Setter Property="Foreground" Value="#e6e9e2"></Setter>
+        </Style>
+        <Style Selector="TextBlock">
+            <Setter Property="Foreground" Value="#e6e9e2"></Setter>
+        </Style>
+    </UserControl.Styles>
     <DockPanel HorizontalAlignment="Stretch" LastChildFill="True">
-        <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Left" Orientation="Horizontal">
-            <Button Classes="Primary"
-                    Width="100"
-                    Foreground="White"
-                    x:Name="ResidentialPropertyAdd"
-                    Content="Добавить"
-                    Click="ResidentialPropertyAdd_OnClick" />
-            <TextBox
-                Name="ResidentialPropertySearch"
-                TextChanged="ResidentialPropertySearch_OnTextChanged"
-                Watermark="Поиск" />
-            <ComboBox
-                Width="180"
-                Name="ResidentalPropertyFilter"
-                PlaceholderText="Select an item"
-                SelectionChanged="ResidentalPropertyFilter_OnSelectionChanged">
-                <ComboBoxItem>
-                    <TextBlock>Все столбцы</TextBlock>
-                </ComboBoxItem>
-                <ComboBoxItem>
-                    <TextBlock>Код</TextBlock>
-                </ComboBoxItem>
-                <ComboBoxItem>
-                    <TextBlock>Адрес</TextBlock>
-                </ComboBoxItem>
-                <ComboBoxItem>
-                    <TextBlock>Площадь</TextBlock>
-                </ComboBoxItem>
-                <ComboBoxItem>
-                    <TextBlock>Комнаты</TextBlock>
-                </ComboBoxItem>
-                <ComboBoxItem>
-                    <TextBlock>Тип помещения</TextBlock>
-                </ComboBoxItem>
-                <ComboBoxItem>
-                    <TextBlock>Сумма</TextBlock>
-                </ComboBoxItem>
-                <ComboBoxItem>
-                    <TextBlock>Работа</TextBlock>
-                </ComboBoxItem>
-            </ComboBox>
+        <StackPanel>
+            <Border
+                Width="400"
+                Margin="0 0 0 20"
+                Background="#24272c"
+                CornerRadius="10">
+                <StackPanel
+                    DockPanel.Dock="Top"
+                    HorizontalAlignment="Left"
+                    Orientation="Horizontal">
+                    <Button Classes="Primary"
+                            Width="113"
+                            Foreground="White"
+                            x:Name="ResidentialPropertyAdd"
+                            Content="Добавить"
+                            Command="{Binding AddResidentialPropertyToDB}" />
+                    <TextBox
+                        Name="ResidentialPropertySearch"
+                        TextChanged="ResidentialPropertySearch_OnTextChanged"
+                        Watermark="Поиск" />
+                    <ComboBox
+                        Width="180"
+                        Name="ResidentalPropertyFilter"
+                        PlaceholderText="Фильтровать по..."
+                        SelectionChanged="ResidentalPropertyFilter_OnSelectionChanged">
+                        <ComboBoxItem>
+                            <TextBlock Foreground="Black">Все столбцы</TextBlock>
+                        </ComboBoxItem>
+                        <ComboBoxItem>
+                            <TextBlock Foreground="Black">Код</TextBlock>
+                        </ComboBoxItem>
+                        <ComboBoxItem>
+                            <TextBlock Foreground="Black">Адрес</TextBlock>
+                        </ComboBoxItem>
+                        <ComboBoxItem>
+                            <TextBlock Foreground="Black">Площадь</TextBlock>
+                        </ComboBoxItem>
+                        <ComboBoxItem>
+                            <TextBlock Foreground="Black">Комнаты</TextBlock>
+                        </ComboBoxItem>
+                        <ComboBoxItem>
+                            <TextBlock Foreground="Black">Тип помещения</TextBlock>
+                        </ComboBoxItem>
+                        <ComboBoxItem>
+                            <TextBlock Foreground="Black">Сумма</TextBlock>
+                        </ComboBoxItem>
+                        <ComboBoxItem>
+                            <TextBlock Foreground="Black">Работа</TextBlock>
+                        </ComboBoxItem>
+                    </ComboBox>
+                </StackPanel>
+            </Border>
+            <Panel>
+                <Border
+                    Background="#24272c"
+                    CornerRadius="10"
+                    Width="950"
+                    Height="400">
+                    <DataGrid Name="ResidentialPropertyGrid"
+                              Width="950"
+                              HorizontalAlignment="Left"
+                              IsReadOnly="True"
+                              ItemsSource="{Binding ResidentialProperty }"
+                              SelectedItem="{Binding ResidentialPropertySelectedItem}">
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Изменить" Name="ResidentialPropertyEdit"
+                                          Command="{Binding EditResidentialPropertyInDB}" />
+                                <MenuItem Header="Удалить" Name="ResidentialPropertyDelete"
+                                          Command="{Binding DeleteResidentialPropertyFromDB}" />
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Width="*" Header="ID" Binding="{Binding ID}" />
+                            <DataGridTextColumn Width="*" Header="Address" Binding="{Binding Address}" />
+                            <DataGridTextColumn Width="*" Header="Square"
+                                                Binding="{Binding Square, StringFormat={}{0} m²}" />
+                            <DataGridTextColumn Width="*" Header="Number of rooms" Binding="{Binding NumberOfRooms}" />
+                            <DataGridTextColumn Width="*" Header="Housing type" Binding="{Binding HousingName}" />
+                            <DataGridTextColumn Width="*" Header="Payment"
+                                                Binding="{Binding PaymentMethod, StringFormat={}{0}$}" />
+                            <DataGridTextColumn Width="*" Header="Work" Binding="{Binding WorkDescription}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
+                <controls:WaveProgress
+                    Name="ResidentialPropertyWP"
+                    DockPanel.Dock="Top"
+                    IsVisible="False" />
+            </Panel>
         </StackPanel>
-        <DataGrid Name="ResidentialPropertyGrid"
-                  Width="800"
-                  Margin="-100 0 0 0"
-                  HorizontalAlignment="Left"
-                  IsReadOnly="True"
-                  ItemsSource="{Binding ResidentialProperty }"
-                  SelectedItem="{Binding ResidentialPropertySelectedItem}">
-            <DataGrid.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="Изменить" Name="ResidentialPropertyEdit"
-                              Click="ResidentialPropertyEdit_OnClick" />
-                    <MenuItem Header="Удалить" Name="ResidentialPropertyDelete"
-                              Click="ResidentialPropertyDelete_OnClick" />
-                </ContextMenu>
-            </DataGrid.ContextMenu>
-            <DataGrid.Columns>
-                <DataGridTextColumn Width="*" Header="ID" Binding="{Binding ID}" />
-                <DataGridTextColumn Width="*" Header="Address" Binding="{Binding Address}" />
-                <DataGridTextColumn Width="*" Header="Square"
-                                    Binding="{Binding Square, StringFormat={}{0} m²}" />
-                <DataGridTextColumn Width="*" Header="Number of rooms" Binding="{Binding NumberOfRooms}" />
-                <DataGridTextColumn Width="*" Header="Housing type" Binding="{Binding HousingName}" />
-                <DataGridTextColumn Width="*" Header="Payment"
-                                    Binding="{Binding PaymentMethod, StringFormat={}{0}$}" />
-                <DataGridTextColumn Width="*" Header="Work" Binding="{Binding WorkDescription}" />
-            </DataGrid.Columns>
-        </DataGrid>
     </DockPanel>
 </UserControl>

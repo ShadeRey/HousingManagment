@@ -10,6 +10,19 @@
 
     <ItemGroup>
         <AvaloniaResource Include="Assets\**"/>
+        <None Remove="Logos\logo_for_tab_item_ma.png" />
+        <None Remove="Logos\logo_for_tab_item_ma.jpg" />
+        <AvaloniaResource Include="Logos\icon_maintenance_work.png" />
+        <None Remove="Logos\icon_housing_type.png" />
+        <AvaloniaResource Include="Logos\icon_housing_type.png" />
+        <None Remove="Logos\icon_infrastructure.png" />
+        <AvaloniaResource Include="Logos\icon_infrastructure.png" />
+        <None Remove="Logos\icon_maintenance_work.png" />
+        <AvaloniaResource Include="Logos\icon_maintenance_work.png" />
+        <None Remove="Logos\icon_residential_property.png" />
+        <AvaloniaResource Include="Logos\icon_residential_property.png" />
+        <None Remove="Logos\icon_utility_payment.png" />
+        <AvaloniaResource Include="Logos\icon_utility_payment.png" />
     </ItemGroup>
 
 
